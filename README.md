@@ -27,3 +27,14 @@ but it's a tight fit!
 # Schematic
 
 **SCHEMATIC COMING SOON**
+
+# Requirements
+
+**TBC!**
+
+Not all of these are necessarily required together. Some are just for different
+types of tests:
+
+*   Icarus Verilog (iverilog)
+*   Verilator + SDL2
+*   Python + cocotb
