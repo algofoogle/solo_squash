@@ -1,9 +1,26 @@
 # This is inspired by: https://github.com/mattvenn/rgb_mixer/blob/main/Makefile
 
+# Main Verilog sources for our design:
 MAIN_VSOURCES = src/solo_squash.v
+
+# Verilog sources used for testing:
 TEST_VSOURCES = test/dump_vcd.v
 
-# COCOTB variables
+# Top Verilog module representing our design:
+TOP = solo_squash
+
+
+# Stuff for simulation:
+SIM_LDFLAGS = -lSDL2 -lSDL2_ttf
+SIM_EXE = sim/obj_dir/V$(TOP)
+XDEFINES := $(DEF:%=+define+%)
+# A fixed seed value for sim_seed:
+SEED ?= 22860
+# A random seed value for im_random:
+RSEED := $(shell bash -c 'echo $$RANDOM')
+
+
+# COCOTB variables:
 export COCOTB_REDUCED_LOG_FMT=1
 export PYTHONPATH := test:$(PYTHONPATH)
 export LIBPYTHON_LOC=$(shell cocotb-config --libpython)
@@ -19,6 +36,7 @@ export LIBPYTHON_LOC=$(shell cocotb-config --libpython)
 # -fLISTFILE		= (can be specified multiple times) LISTFILE contains a newline-separated list of other .v files to compile
 # -g2012			= Support Verilog generation IEEE1800-2012.
 
+# Test the design using iverilog and our cocotb tests...
 # For this main test, we use two top modules (hence -s twice):
 # solo_squash (the design) and dump_vcd (just to ensure we get a .vcd file).
 test:
@@ -35,10 +53,44 @@ test:
 #...or something like this:
 # https://github.com/mattvenn/wrapped_rgb_mixer/blob/8134e091d816ef390c96f353831311ba90ed6b76/caravel_rgb_mixer/Makefile#L22-L27
 
+
+# Simulate our design visually using Verilator, outputting to an SDL2 window.
+#NOTE: All unassigned bits are set to 0:
+sim: $(SIM_EXE)
+	@$(SIM_EXE)
+
+# Simulate with all unassigned bits set to 1:
+sim_ones: $(SIM_EXE)
+	@$(SIM_EXE) +verilator+rand+reset+1
+
+# Simulate with unassigned bits fully randomised each time:
+sim_random: $(SIM_EXE)
+	echo "Random seed: " $(RSEED)
+	@$(SIM_EXE) +verilator+rand+reset+2 +verilator+seed+$(RSEED)
+
+# Simulate with unassigned bits randomised based on a known seed each time:
+sim_seed: $(SIM_EXE)
+	echo "Random seed: " $(SEED)
+	@$(SIM_EXE) +verilator+rand+reset+2 +verilator+seed+$(SEED)
+
+
+#SMELL: Should this depend on sim/sim_main.cpp? What about also $(MAIN_VSOURCES)?
+$(SIM_EXE):
+	verilator \
+		--Mdir sim/obj_dir \
+		--cc $(MAIN_VSOURCES) \
+		--top-module $(TOP) \
+		--exe --build ../sim/sim_main.cpp \
+		-CFLAGS -DINSPECT_INTERNAL\
+		-LDFLAGS "$(SIM_LDFLAGS)" \
+		+define+RESET_AL \
+		$(XDEFINES)
+
 clean:
 	rm -rf sim_build
+	rm -rf sim/obj_dir
 
 # This tells make that 'test' and 'clean' are themselves not artefacts to make,
 # but rather tasks to always run:
-.PHONY: test clean
+.PHONY: test clean sim
 

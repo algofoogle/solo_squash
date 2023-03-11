@@ -1,1 +1,7 @@
+# iverilog temp dirs:
 sim_build
+
+# verilator temp dirs:
+obj_dir
+
+.vscode
