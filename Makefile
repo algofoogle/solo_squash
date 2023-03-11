@@ -42,16 +42,25 @@ export LIBPYTHON_LOC=$(shell cocotb-config --libpython)
 test:
 	rm -rf sim_build
 	mkdir sim_build
+	rm -rf results
 	iverilog \
 		-g2012 \
 		-o sim_build/sim.vvp \
 		-s solo_squash -s dump_vcd \
 		$(MAIN_VSOURCES) $(TEST_VSOURCES)
-#...then to run tests, we can do something like this:
-# PYTHONOPTIMIZE=${NOASSERT} MODULE=test.test_solo_squash vvp -M $$(cocotb-config --prefix)/cocotb/libs -m libcocotbvpi_icarus sim_build/sim.vvp
-# ! grep failure results.xml
-#...or something like this:
-# https://github.com/mattvenn/wrapped_rgb_mixer/blob/8134e091d816ef390c96f353831311ba90ed6b76/caravel_rgb_mixer/Makefile#L22-L27
+	PYTHONOPTIMIZE=${NOASSERT} MODULE=test.test_solo_squash \
+		vvp -M $$(cocotb-config --prefix)/cocotb/libs -m libcocotbvpi_icarus \
+		sim_build/sim.vvp
+	mkdir results
+	mv results.xml results/
+	mv solo_squash.vcd results/
+	! grep -i failure results/results.xml
+#SMELL: Is there a better way to tell iverilog, vvp, or cocotb to write
+# results directly into results?
+
+
+show_results:
+	gtkwave results/solo_squash.vcd solo_squash.gtkw
 
 
 # Simulate our design visually using Verilator, outputting to an SDL2 window.
@@ -88,9 +97,12 @@ $(SIM_EXE):
 
 clean:
 	rm -rf sim_build
+	rm -rf results
 	rm -rf sim/obj_dir
+	rm -rf test/__pycache__
+	rm -rf solo_squash.vcd results.xml
 
 # This tells make that 'test' and 'clean' are themselves not artefacts to make,
 # but rather tasks to always run:
-.PHONY: test clean sim
+.PHONY: test clean sim sim_ones sim_random sim_seed show_results
 

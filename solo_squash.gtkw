@@ -1,0 +1,40 @@
+[*]
+[*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
+[*] Sat Mar 11 11:03:43 2023
+[*]
+[dumpfile] "/home/zerotoasic/anton/solo_squash/results/solo_squash.vcd"
+[dumpfile_mtime] "Sat Mar 11 11:02:32 2023"
+[dumpfile_size] 3092
+[savefile] "/home/zerotoasic/anton/solo_squash/solo_squash.gtkw"
+[timestart] 0
+[size] 2018 1082
+[pos] -1 -1
+*-17.000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 297
+[signals_width] 110
+[sst_expanded] 1
+[sst_vpaned_height] 326
+@28
+solo_squash.clk
+solo_squash.reset
+@200
+-
+@28
+solo_squash.pause_n
+solo_squash.new_game_n
+solo_squash.up_key_n
+solo_squash.down_key_n
+@200
+-
+@28
+solo_squash.red
+solo_squash.green
+solo_squash.blue
+solo_squash.hsync
+solo_squash.vsync
+@200
+-
+@28
+solo_squash.speaker
+[pattern_trace] 1
+[pattern_trace] 0

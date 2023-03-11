@@ -4,4 +4,9 @@ sim_build
 # verilator temp dirs:
 obj_dir
 
+# Test results from iverilog/cocotb:
+results/*
+
+# Other junk
+__pycache__
 .vscode
