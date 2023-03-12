@@ -46,6 +46,9 @@ module solo_squash_caravel(
 
     // Our design can be reset either by Wishbone reset or GPIO externally:
     wire reset = io_in[8] | wb_rst_i;
+    //SMELL: io_in[8] could be driven by a button,
+    // and it lacks metastability mitigation.
+    // Maybe we should put a double DFF buffer in here, for it?
 
     solo_squash game(
 `ifdef USE_POWER_PINS

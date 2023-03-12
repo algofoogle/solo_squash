@@ -146,6 +146,7 @@ make show_results
 *   [`sim/`](./sim/): C++ code for Verilator-driven SDL-based VGA simulation.
 *   [`test/`](./test/): Where we'll start to put files that are needed for formal verification.
     *   `__init__.py`: (empty file) needs to be in here so that Python/cocotb finds our tests.
+*   [`caravel_stuff/`](./caravel_stuff/): Things we'll probably need later for making a proper Caravel UPW.
 
 # Requirements
 
