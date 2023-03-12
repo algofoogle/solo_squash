@@ -117,11 +117,17 @@ module solo_squash #(
       inBallY   <= 0;
       ballDirX  <= 1;
       ballDirY  <= 1;
-      // Note also that we don't reset the ball direction;
-      // we don't care if this is random or not after reset.
+`ifdef BG_ANIMATED
+      //NOTE: Resetting offset is not strictly needed,
+      // but without it the blue signal is unpredictable for testing purposes.
+      offset    <= 0;
+`endif
     end else begin
 
       if (0==new_game_n) begin
+        // Don't do a full reset; just reset the game state.
+        // Note also that for a new game we don't reset the ball direction;
+        // we don't care if this is random or not after reset.
         // These parameters are a good start for a fair game:
         hit       <= 0;
         paddle    <= PADDLE_RESET;
@@ -249,8 +255,10 @@ module solo_squash #(
 
   assign blue = visible & ~green & ~red & (
 `ifdef BG_PRETTY
+    // More complex pattern:
     (^(oh[4:2] ^ ov[4:2])) & ((oh[4] ^ ov[4]) ? (oh[0] & ov[0]) : (oh[0] ^ ov[0]))
 `else
+    // Cross-hatched checkerboard pattern:
     (oh[4] ^ ov[4]) ? (oh[0] & ov[0]) : (oh[0] ^ ov[0])
 `endif
   );

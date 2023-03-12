@@ -125,7 +125,7 @@ again. This is normal; just expect examine mode to trip at least 2 times per bal
 
 Run:
 ```bash
-make test
+make clean test
 ```
 
 This will run tests in `test/` based on cocotb, using Icarus Verilog. It will move test
@@ -156,5 +156,10 @@ Not all of these are necessarily required together. Some are just for different
 types of tests:
 
 *   Icarus Verilog (iverilog)
-*   Python + cocotb
+*   Python 3.8+, [cocotb](https://docs.cocotb.org/en/stable/install.html) 1.7.2+, [pytest](https://docs.pytest.org/en/7.1.x/getting-started.html)
 *   Verilator + SDL2
+
+Installing pytest 7.1.x (which cocotb uses to improve its assertions output):
+```bash
+pip install --upgrade pytest
+```
