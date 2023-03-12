@@ -140,13 +140,12 @@ make show_results
 
 # Contents
 
-*   [`src/`](./src/)
-    *   Verilog source for the project.
-*   [`sim/`](./sim/)
-    *   C++ code for Verilator-driven SDL-based VGA simulation.
-*   [`test/`](./test/)
-    *   Where we'll start to put files that are needed for formal verification.
-    *   NOTE: `__init__.py` (empty file) needs to be in here so that Python/cocotb finds our tests.
+*   [`src/`](./src/): Verilog source for the project.
+    *   `solo_squash.v` is the main design.
+    *   `solo_squash_caravel.v` is for when we want to implement this as an ASIC, using Caravel. This file is a bridge between the main design and the Caravel `user_project_wrapper` (UPW), and we have it so we can have additional logic (that otherwise must be excluded from the UPW) that makes our design specifically compatible with Caravel.
+*   [`sim/`](./sim/): C++ code for Verilator-driven SDL-based VGA simulation.
+*   [`test/`](./test/): Where we'll start to put files that are needed for formal verification.
+    *   `__init__.py`: (empty file) needs to be in here so that Python/cocotb finds our tests.
 
 # Requirements
 
