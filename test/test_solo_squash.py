@@ -1,3 +1,8 @@
+#NOTE: These tests are intended to be run against the main generic design,
+# solo_squash.v. There's also solo_squash_caravel.v, but this is an adapter
+# specifically for when we need to tweak a few signals to get the most out
+# of using solo_squash.v in combination with the UPW (user_project_wrapper).
+
 import cocotb
 import os
 from cocotb.clock import Clock

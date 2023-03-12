@@ -147,6 +147,8 @@ make show_results
 *   [`test/`](./test/): Where we'll start to put files that are needed for formal verification.
     *   `__init__.py`: (empty file) needs to be in here so that Python/cocotb finds our tests.
 *   [`caravel_stuff/`](./caravel_stuff/): Things we'll probably need later for making a proper Caravel UPW.
+    *   `solo_squash_tb.v`: A testbench to be used with cocotb for testing within Caravel (i.e. via `uut`, which I think wraps the UPW). This would normally go in the Caravel project's `verilog/rtl/dv/`.
+    *   `user_project_wrapper.v`: UPW that could be used for this design, which instantiates our "adapter" `solo_squash_caravel`.
 
 # Requirements
 
