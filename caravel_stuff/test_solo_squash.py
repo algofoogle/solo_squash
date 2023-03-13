@@ -61,6 +61,11 @@ async def test_start(dut):
     # do a design-level reset (i.e. pulse dut.ext_reset_n to 0 then 1)?
     #CHEAT: Just wait out (say) 500us and then assume GPIOs are ready,
     # assert ext_reset_n, release, then carry on.
+    #NOTE: It might be possible to detect GPIO setup complete (and our
+    # outputs activated) by checking:
+    # solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
+    # ...and looking for oeb[13] (say) going from Z to 0. These seem
+    # to change all coincidently with outputs going from Z to asserted.
 
     # For now, I'll just let 500,000 clock ticks elapse (i.e. enough for
     # GPIOs to be set up, and at least 1 full frame to render):
