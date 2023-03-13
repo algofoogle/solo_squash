@@ -75,11 +75,11 @@ module solo_squash_caravel(
         .up_key_n   (io_in [12]),
 
         // --- Outputs ---
-        .hsync      (io_out[13]),
-        .vsync      (io_out[14]),
-        .red        (io_out[15]),
-        .green      (io_out[16]),
-        .blue       (io_out[17]),
+        .red        (io_out[13]),
+        .green      (io_out[14]),
+        .blue       (io_out[15]),
+        .hsync      (io_out[16]),
+        .vsync      (io_out[17]),
         .speaker    (io_out[18])
 
         // The following stuff is not (yet) needed for our design:
