@@ -9,9 +9,15 @@
 // user_project_wrapper;
 // it only allows wire assignments.
 
+//SMELL: In the same way that I would normally make separate
+// "fpga" and "cpld" directories, to target different devices,
+// should this file belong to an "asic" or "caravel" dir?
+
 `default_nettype none
 `timescale 1ns / 1ps
 
+//NOTE: This would typically be instantiated with the name `mprj`
+// inside user_project_wrapper.v
 module solo_squash_caravel(
 `ifdef USE_POWER_PINS
     inout vccd1,      // User area 1 1.8V supply
@@ -23,7 +29,7 @@ module solo_squash_caravel(
     // IOs
     input  [`MPRJ_IO_PADS-1:0]  io_in,
     output [`MPRJ_IO_PADS-1:0]  io_out,
-    output [`MPRJ_IO_PADS-1:0]  io_oeb,
+    output [`MPRJ_IO_PADS-1:0]  io_oeb
     // The following stuff is not (yet) needed for our design:
     // // MGMT SoC Wishbone Slave
     // input                       wbs_stb_i,
@@ -44,10 +50,13 @@ module solo_squash_caravel(
 
     //NOTE: Our design avoids using IO[7:0] because mgmt core uses this.
 
-    // Our design can be reset either by Wishbone reset or GPIO externally:
-    wire reset = io_in[8] | wb_rst_i;
-    //SMELL: io_in[8] could be driven by a button,
-    // and it lacks metastability mitigation.
+    // Our design can be reset either by Wishbone reset or GPIO externally.
+    // If using external reset (typically called ext_reset_n), note that it
+    // is active-low and normally expected to be pulled high
+    // (but brought low by a pushbutton):
+    wire design_reset = wb_rst_i | ~io_in[8];
+    //SMELL: ext_reset_n could be indeterminate before GPIOs are initialised!
+    //SMELL: io_in[8], if driven by a button, lacks metastability mitigation.
     // Maybe we should put a double DFF buffer in here, for it?
 
     solo_squash game(
@@ -58,7 +67,7 @@ module solo_squash_caravel(
         // --- Inputs ---
         // Our design's main clock comes directly from Wishbone bus clock:
         .clk        (wb_clk_i),
-        .reset      (reset),
+        .reset      (design_reset),
         // Active-low buttons (pulled high by default):
         .pause_n    (io_in [ 9]),
         .new_game_n (io_in [10]),
@@ -71,7 +80,7 @@ module solo_squash_caravel(
         .red        (io_out[15]),
         .green      (io_out[16]),
         .blue       (io_out[17]),
-        .speaker    (io_out[18]),
+        .speaker    (io_out[18])
 
         // The following stuff is not (yet) needed for our design:
         // // MGMT SoC Wishbone Slave
@@ -94,7 +103,7 @@ module solo_squash_caravel(
     // Output enables are active-low.
     // During reset, we want them hi-Z,
     // so set corresponding io_oeb lines high.
-    assign io_oeb[18:13] = {6{reset}};
+    assign io_oeb[18:13] = {6{design_reset}};
 
 
 endmodule

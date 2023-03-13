@@ -15,7 +15,11 @@ This repo is licensed with [Apache 2](LICENSE).
 
 # Details
 
-This is intended to drive a VGA display at 640x480 resolution, ~60Hz.
+The main (generic) design is [`src/solo_squash.v`](./src/solo_squash.v).
+
+This is intended to drive a VGA display at 640x480 resolution, ~60Hz,
+and it gets adapted to different targets, including
+FPGA, Verilator-based VGA simulation, and Caravel ASIC.
 
 It has been tested on a DE0-Nano FPGA board (Altera Cyclone IV),
 and I hope to submit this as part of the Google Skywater project to
@@ -138,6 +142,26 @@ To see the results in GTKWave, run:
 make show_results
 ```
 
+# Caravel ASIC target
+
+**More to come.**
+
+When *tested* within Caravel (using cocotb tests), I think we have the following
+hierarchically:
+*   User code: `solo_squash_tb`
+*   ...then Caravel code:   &rarr; `uut` (`caravel`) &rarr; `mprj` (`user_project_wrapper`)
+*   ...finally more user code: &rarr; `mprj` (`solo_squash_caravel`) &rarr; `game` (`solo_squash`)
+
+Hmm, not so sure about the 2nd `mprj` level. It does look like this is what
+it's called in the various verilog files, but I need to understand that better
+because the *tests* refer to it without that duplication.
+
+Note that `solo_squash_tb` includes a few extra wire definitions that assign
+names to the Caravel GPIOs (etc) that we've chosen to use, hence meaning
+that most of the code from the original tests can still use those names
+for convenience.
+
+
 # Contents
 
 *   [`src/`](./src/): Verilog source for the project.
@@ -149,6 +173,9 @@ make show_results
 *   [`caravel_stuff/`](./caravel_stuff/): Things we'll probably need later for making a proper Caravel UPW.
     *   `solo_squash_tb.v`: A testbench to be used with cocotb for testing within Caravel (i.e. via `uut`, which I think wraps the UPW). This would normally go in the Caravel project's `verilog/rtl/dv/`.
     *   `user_project_wrapper.v`: UPW that could be used for this design, which instantiates our "adapter" `solo_squash_caravel`.
+    *   `Makefile`: to be used inside (say) `verilog/dv/solo_squash` to run tests of our design via cocotb.
+    *   `solo_squash.c`: VexRiscv firmware to configure GPIOs for our design.
+    *   `test_solo_squash.py`: Tests that are specific to our design when used in Caravel, to be used inside (say) `verilog/dv/solo_squash`. Ideally should follow `test/test_solo_squash.py` closely, but it's probably a WIP right now that's all over the place.
 
 # Requirements
 

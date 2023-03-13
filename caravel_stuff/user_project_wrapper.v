@@ -82,36 +82,45 @@ module user_project_wrapper #(
 /* User project is instantiated  here   */
 /*--------------------------------------*/
 
-solo_squash mprj (
-`ifdef USE_POWER_PINS
-	.vccd1(vccd1),	// User area 1 1.8V power
-	.vssd1(vssd1),	// User area 1 digital ground
-`endif
+    // solo_squash_caravel is a wrapper around my generic solo_squash design.
+    // It has a tiny bit of extra logic in it that makes the generic design
+    // suitable for use inside Caravel i.e. it is like an adapter, in the
+    // same way that we'd adapt the design for an FPGA or CPLD. That logic
+    // is not allowed in (i.e. cannot be synthesised in) this UPW.
+    // Compare this file with solo_squash_caravel.v:
+    //  https://github.com/algofoogle/solo_squash/blob/main/src/solo_squash_caravel.v
+    // ...and solo_squash.v:
+    //  https://github.com/algofoogle/solo_squash/blob/main/src/solo_squash.v
+    solo_squash_caravel mprj (
+    `ifdef USE_POWER_PINS
+        .vccd1(vccd1),	// User area 1 1.8V power
+        .vssd1(vssd1),	// User area 1 digital ground
+    `endif
 
-    .wb_clk_i   (wb_clk_i),
-    .wb_rst_i   (wb_rst_i),
-    // IO Pads
-    .io_in      (io_in),
-    .io_out     (io_out),
-    .io_oeb     (io_oeb),
+        .wb_clk_i   (wb_clk_i),
+        .wb_rst_i   (wb_rst_i),
+        // IO Pads
+        .io_in      (io_in),
+        .io_out     (io_out),
+        .io_oeb     (io_oeb)
 
-    // The following stuff is not (yet) needed for our design:
-    // // MGMT SoC Wishbone Slave
-    // .wbs_cyc_i(wbs_cyc_i),
-    // .wbs_stb_i(wbs_stb_i),
-    // .wbs_we_i(wbs_we_i),
-    // .wbs_sel_i(wbs_sel_i),
-    // .wbs_adr_i(wbs_adr_i),
-    // .wbs_dat_i(wbs_dat_i),
-    // .wbs_ack_o(wbs_ack_o),
-    // .wbs_dat_o(wbs_dat_o),
-    // // Logic Analyzer
-    // .la_data_in(la_data_in),
-    // .la_data_out(la_data_out),
-    // .la_oenb (la_oenb),
-    // // IRQ
-    // .irq(user_irq)
-);
+        // The following stuff is not (yet) needed for our design:
+        // // MGMT SoC Wishbone Slave
+        // .wbs_cyc_i(wbs_cyc_i),
+        // .wbs_stb_i(wbs_stb_i),
+        // .wbs_we_i(wbs_we_i),
+        // .wbs_sel_i(wbs_sel_i),
+        // .wbs_adr_i(wbs_adr_i),
+        // .wbs_dat_i(wbs_dat_i),
+        // .wbs_ack_o(wbs_ack_o),
+        // .wbs_dat_o(wbs_dat_o),
+        // // Logic Analyzer
+        // .la_data_in(la_data_in),
+        // .la_data_out(la_data_out),
+        // .la_oenb (la_oenb),
+        // // IRQ
+        // .irq(user_irq)
+    );
 
 endmodule	// user_project_wrapper
 

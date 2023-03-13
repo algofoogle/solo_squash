@@ -52,10 +52,12 @@ module solo_squash_tb;
     // These are convenience signal names for our GPIOs,
     // that allow our stand-alone solo_squash cocotb tests to be reused...
     // Inputs (that come from our cocotb tests):
+    wire ext_reset_n;
     wire pause_n;
     wire new_game_n;
     wire up_key_n;
     wire down_key_n;
+    assign mprj_io[ 8]  = ext_reset_n;
     assign mprj_io[ 9]  = pause_n;
     assign mprj_io[10]  = new_game_n;
     assign mprj_io[11]  = up_key_n;
@@ -67,8 +69,11 @@ module solo_squash_tb;
     wire hsync          = mprj_io[16];
     wire vsync          = mprj_io[17];
     wire speaker        = mprj_io[18];
-    // Internally generated (from IO[8] | wb_rst_i):
-    wire reset          = uut.mprj.reset;
+    // The actual internal reset signal that our design receives
+    // (generated from `wb_rst_i|~IO[8]` because ext_reset_n is
+    // active-low, being driven by a pulled-up pushbutton typically):
+    wire design_reset   = uut.mprj.design_reset;
+    //SMELL: ext_reset_n could be indeterminate before GPIOs are initialised!
 
     caravel uut (
         .vddio    (VDD3V3),
