@@ -72,7 +72,7 @@ module solo_squash_tb;
     // The actual internal reset signal that our design receives
     // (generated from `wb_rst_i|~IO[8]` because ext_reset_n is
     // active-low, being driven by a pulled-up pushbutton typically):
-    wire design_reset   = uut.mprj.design_reset;
+    wire design_reset   = uut.mprj.mprj.design_reset;
     //SMELL: ext_reset_n could be indeterminate before GPIOs are initialised!
 
     caravel uut (
