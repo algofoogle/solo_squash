@@ -1,0 +1,108 @@
+[*]
+[*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
+[*] Wed Mar 15 04:56:49 2023
+[*]
+[dumpfile] "/home/zerotoasic/asic_tools/caravel_user_project/verilog/dv/solo_squash/solo_squash.vcd"
+[dumpfile_mtime] "Wed Mar 15 04:40:18 2023"
+[dumpfile_size] 6060240
+[savefile] "/home/zerotoasic/asic_tools/caravel_user_project/verilog/dv/solo_squash/solo_squash3.gtkw"
+[timestart] 597190000
+[size] 3492 1259
+[pos] 344 164
+*-23.600000 759760000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] solo_squash_tb.
+[treeopen] solo_squash_tb.uut.
+[treeopen] solo_squash_tb.uut.gpio_control_in_1[2].gpio_logic_high.gpio_logic_high.
+[treeopen] solo_squash_tb.uut.mgmt_buffers.
+[treeopen] solo_squash_tb.uut.mprj.
+[treeopen] solo_squash_tb.uut.mprj.mprj.
+[treeopen] solo_squash_tb.uut.padframe.
+[treeopen] solo_squash_tb.uut.padframe.mprj_pads.
+[sst_width] 297
+[signals_width] 232
+[sst_expanded] 1
+[sst_vpaned_height] 681
+@28
+solo_squash_tb.clk
+solo_squash_tb.RSTB
+solo_squash_tb.uut.mprj.wb_rst_i
+solo_squash_tb.ext_reset_n
+solo_squash_tb.design_reset
+@29
+solo_squash_tb.gpio_ready
+@28
+solo_squash_tb.hsync
+solo_squash_tb.vsync
+solo_squash_tb.red
+solo_squash_tb.green
+solo_squash_tb.blue
+solo_squash_tb.speaker
+@c00022
+solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
+@28
+(19)solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
+(20)solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
+(21)solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
+(22)solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
+(23)solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
+(24)solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
+(25)solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
+@1401200
+-group_end
+@28
+solo_squash_tb.clk
+solo_squash_tb.power1
+solo_squash_tb.power2
+solo_squash_tb.power3
+solo_squash_tb.power4
+solo_squash_tb.RSTB
+solo_squash_tb.ext_reset_n
+solo_squash_tb.design_reset
+solo_squash_tb.hsync
+solo_squash_tb.vsync
+solo_squash_tb.red
+solo_squash_tb.green
+solo_squash_tb.blue
+solo_squash_tb.speaker
+@200
+-
+-
+@28
+solo_squash_tb.uut.mprj.mprj.game.ballDirX
+solo_squash_tb.uut.mprj.mprj.game.ballDirY
+@22
+solo_squash_tb.uut.mprj.mprj.game.ballX[8:0]
+solo_squash_tb.uut.mprj.mprj.game.ballY[7:0]
+@28
+solo_squash_tb.uut.mprj.mprj.game.hit
+solo_squash_tb.uut.mprj.mprj.game.hmax
+solo_squash_tb.uut.mprj.mprj.game.inBallX
+solo_squash_tb.uut.mprj.mprj.game.inBallY
+solo_squash_tb.uut.mprj.mprj.game.inPaddle
+@22
+solo_squash_tb.uut.mprj.mprj.game.paddle[8:0]
+@28
+solo_squash_tb.uut.mprj.mprj.game.visible
+solo_squash_tb.uut.mprj.mprj.game.vmax
+solo_squash_tb.uut.mprj.mprj.game.wallB
+solo_squash_tb.uut.mprj.mprj.game.wallL
+solo_squash_tb.uut.mprj.mprj.game.wallR
+solo_squash_tb.uut.mprj.mprj.game.wallT
+@8022
+solo_squash_tb.uut.mprj.mprj.game.h[9:0]
+@20000
+-
+-
+@8022
+solo_squash_tb.uut.mprj.mprj.game.v[9:0]
+@20000
+-
+-
+@22
+solo_squash_tb.uut.mprj.mprj.game.h1[4:0]
+solo_squash_tb.uut.mprj.mprj.game.v1[4:0]
+solo_squash_tb.uut.mprj.mprj.game.offset[4:0]
+solo_squash_tb.uut.mprj.mprj.game.oh[9:0]
+solo_squash_tb.uut.mprj.mprj.game.ov[9:0]
+[pattern_trace] 1
+[pattern_trace] 0

@@ -54,3 +54,6 @@ coco_test: solo_squash.hex
 	TESTCASE=test_start MODULE=test_solo_squash \
 	vvp -M $$(cocotb-config --prefix)/cocotb/libs -m libcocotbvpi_icarus sim_build/sim.vvp
 	! grep failure results.xml
+
+show_results:
+	gtkwave solo_squash.vcd solo_squash3.gtkw

@@ -50,8 +50,8 @@ async def test_start(dut):
     await ClockCycles(dut.clk, 8);      dut.power3.value = 1
     await ClockCycles(dut.clk, 8);      dut.power4.value = 1
 
-    # Wait another 80 clock cycles (3.2us; does it need to be this much?)
-    # and then release reset:
+    # Wait another 80 clock cycles and then release reset
+    # (3.2us; does it need to be this much? Maybe this reflects a real RC reset delay)
     await ClockCycles(dut.clk, 80);     dut.RSTB.value = 1
 
     #SMELL: I think that only NOW, since RSTB is released, the
@@ -60,40 +60,31 @@ async def test_start(dut):
     # GPIOs are ready, and outputs are live? If so, should we then
     # do a design-level reset (i.e. pulse dut.ext_reset_n to 0 then 1)?
 
-    # Wait for GPIOs to become active
-    # (which comes from uut.housekeeping.serial_load):
+    # Wait for GPIOs to become active (when our firmware signals it
+    # via loopback from pulse on LA[32]):
     await RisingEdge(dut.gpio_ready)
+    await FallingEdge(dut.gpio_ready)
 
-    # Wait 5 clock cycles:
-    await ClockCycles(dut.clk, 5)
+    # Wait 20 clock cycles:
+    await ClockCycles(dut.clk, 20)
 
     # Then assert our external reset for 10 clock cycles,
     # so we know where we'll end up:
     dut.ext_reset_n.value = 0
-    await ClockCycles(dut.clk, 10);     dut.ext_reset_n.value = 1
+    await ClockCycles(dut.clk, 10)
+    dut.ext_reset_n.value = 1
 
     # Now we should be able to await 420,001 clock cycles and prove
     # that a full frame (plus 1 clock) completes:
+    await ClockCycles(dut.clk, 420_001)
 
-
-    #SMELL: For the real world, we should consider making our firmware
+    #SMELL: For the real world, we could consider making our firmware
     # use an LA line to reset the design once GPIO setup is complete,
     # or not worry about it at all (since it will generate a display
     # in good time anyway) or we could even: (a) supply the serial_load
     # into our design, and let it self-reset; or (b) just use a timed
     # external reset or leave that reset up to the user via pushbutton.
 
-    #CHEAT: Just wait out (say) 500us and then assume GPIOs are ready,
-    # assert ext_reset_n, release, then carry on.
-    #NOTE: It might be possible to detect GPIO setup complete (and our
-    # outputs activated) by checking:
-    # solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
-    # ...and looking for oeb[13] (say) going from Z to 0. These seem
-    # to change all coincidently with outputs going from Z to asserted.
-
-    # For now, I'll just let 500,000 clock ticks elapse (i.e. enough for
-    # GPIOs to be set up, and at least 1 full frame to render):
-    await ClockCycles(dut.clk, 420_001)
 
 
 
