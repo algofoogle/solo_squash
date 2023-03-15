@@ -26,10 +26,6 @@ module solo_squash_caravel(
     // Wishbone Slave ports (WB MI A)
     input                       wb_clk_i,
     input                       wb_rst_i,
-    // IOs
-    input  [`MPRJ_IO_PADS-1:0]  io_in,
-    output [`MPRJ_IO_PADS-1:0]  io_out,
-    output [`MPRJ_IO_PADS-1:0]  io_oeb
     // The following stuff is not (yet) needed for our design:
     // // MGMT SoC Wishbone Slave
     // input                       wbs_stb_i,
@@ -41,11 +37,15 @@ module solo_squash_caravel(
     // output                      wbs_ack_o,
     // output [31:0]               wbs_dat_o,
     // // Logic Analyzer Signals
-    // input  [127:0]              la_data_in,
+    input  [127:0]              la_data_in,
     // output [127:0]              la_data_out,
     // input  [127:0]              la_oenb,
     // // User maskable interrupt signals
-    // output [2:0]                user_irq
+    // output [2:0]                user_irq,
+    // IOs
+    input  [`MPRJ_IO_PADS-1:0]  io_in,
+    output [`MPRJ_IO_PADS-1:0]  io_out,
+    output [`MPRJ_IO_PADS-1:0]  io_oeb
 );
 
     //NOTE: Our design avoids using IO[7:0] because mgmt core uses this.
@@ -58,6 +58,20 @@ module solo_squash_caravel(
     //SMELL: ext_reset_n could be indeterminate before GPIOs are initialised!
     //SMELL: io_in[8], if driven by a button, lacks metastability mitigation.
     // Maybe we should put a double DFF buffer in here, for it?
+
+    // Output enables are active-low. During reset, we want them hi-Z,
+    // so set corresponding io_oeb lines high.
+    assign io_oeb[20:13] = {8{design_reset}};
+
+    // For testing purposes, we expose our internal design_reset and
+    // internal LA-based "active" signal as GPIO outputs 19 and 20 respectively.
+    // We could've targeted them directly on the RTL tests, but they would otherwise
+    // be inaccessible via GL tests if we didn't bring them out as GPIOs.
+    assign io_out[19] = design_reset;
+    // This signal is for testing, and is pulsed by our firmware, to tell us
+    // when GPIOs have finished being set up. Externally we refer to it as gpio_ready:
+    assign io_out[20] = la_data_in[32]; // gpio_ready.
+
 
     solo_squash game(
 `ifdef USE_POWER_PINS
@@ -100,10 +114,6 @@ module solo_squash_caravel(
         // .irq(user_irq)
     );
 
-    // Output enables are active-low.
-    // During reset, we want them hi-Z,
-    // so set corresponding io_oeb lines high.
-    assign io_oeb[18:13] = {6{design_reset}};
 
 
 endmodule

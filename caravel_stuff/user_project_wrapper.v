@@ -99,11 +99,6 @@ module user_project_wrapper #(
 
         .wb_clk_i   (wb_clk_i),
         .wb_rst_i   (wb_rst_i),
-        // IO Pads
-        .io_in      (io_in),
-        .io_out     (io_out),
-        .io_oeb     (io_oeb)
-
         // The following stuff is not (yet) needed for our design:
         // // MGMT SoC Wishbone Slave
         // .wbs_cyc_i(wbs_cyc_i),
@@ -115,11 +110,15 @@ module user_project_wrapper #(
         // .wbs_ack_o(wbs_ack_o),
         // .wbs_dat_o(wbs_dat_o),
         // // Logic Analyzer
-        // .la_data_in(la_data_in),
+        .la_data_in (la_data_in), // For now, in my design, this is just needed for "gpio_ready" test signal.
         // .la_data_out(la_data_out),
         // .la_oenb (la_oenb),
         // // IRQ
-        // .irq(user_irq)
+        // .irq(user_irq),
+        // IO Pads
+        .io_in      (io_in),
+        .io_out     (io_out),
+        .io_oeb     (io_oeb)
     );
 
 endmodule	// user_project_wrapper

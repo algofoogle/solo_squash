@@ -69,13 +69,14 @@ module solo_squash_tb;
     wire hsync          = mprj_io[16];
     wire vsync          = mprj_io[17];
     wire speaker        = mprj_io[18];
+    // The following signals are intended just for testing...
     // The actual internal reset signal that our design receives
     // (generated from `wb_rst_i|~IO[8]` because ext_reset_n is
     // active-low, being driven by a pulled-up pushbutton typically):
-    wire design_reset   = uut.mprj.mprj.design_reset;
-    // This signal will pulse high when GPIOs get loaded/activated:
-    wire gpio_ready     = uut.housekeeping.serial_load;
     //SMELL: ext_reset_n could be indeterminate before GPIOs are initialised!
+    wire design_reset   = mprj_io[19];
+    // This signal will pulse high when GPIOs get loaded/activated:
+    wire gpio_ready     = mprj_io[20];
 
     caravel uut (
         .vddio    (VDD3V3),
