@@ -73,6 +73,8 @@ module solo_squash_tb;
     // (generated from `wb_rst_i|~IO[8]` because ext_reset_n is
     // active-low, being driven by a pulled-up pushbutton typically):
     wire design_reset   = uut.mprj.mprj.design_reset;
+    // This signal will pulse high when GPIOs get loaded/activated:
+    wire gpio_ready     = uut.housekeeping.serial_load;
     //SMELL: ext_reset_n could be indeterminate before GPIOs are initialised!
 
     caravel uut (

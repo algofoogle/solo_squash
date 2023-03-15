@@ -29,6 +29,7 @@ CONFIG = caravel_user_project
 
 # For cocotb tests:
 #SMELL: This PYTHONPATH is clearly wrong, but is it used anyway?
+# Maybe it's only needed if we have to import other modules (as rgb_mixer does with, say, Encoder).
 export PYTHONPATH := $(DESIGNS)/verilog/rtl/wrapped_rgb_mixer/rgb_mixer/test
 export LIBPYTHON_LOC=$(shell cocotb-config --libpython)
 export COCOTB_REDUCED_LOG_FMT=1
