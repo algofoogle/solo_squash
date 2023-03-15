@@ -61,7 +61,9 @@ module solo_squash_caravel(
 
     // Output enables are active-low. During reset, we want them hi-Z,
     // so set corresponding io_oeb lines high.
-    assign io_oeb[20:13] = {8{design_reset}};
+    assign io_oeb[18:13] = {6{design_reset}};
+    // IO[20:19] are always outputting, because they're test pins:
+    assign io_oeb[20:19] = 2'b00;
 
     // For testing purposes, we expose our internal design_reset and
     // internal LA-based "active" signal as GPIO outputs 19 and 20 respectively.
