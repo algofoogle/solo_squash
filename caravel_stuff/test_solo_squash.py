@@ -36,6 +36,13 @@ async def external_reset_cycle(dut):
     await ClockCycles(dut.clk, 10)
     dut.ext_reset_n.value = 1
     await settle_step(dut)
+    #SMELL: For the real world, we could consider making our firmware
+    # use an LA line to reset the design once GPIO setup is complete,
+    # or not worry about it at all (since it will generate a display
+    # in good time anyway) or we could even: (a) supply the serial_load
+    # into our design, and let it self-reset; or (b) just use a timed
+    # external reset or leave that reset up to the user via pushbutton.
+
 
 # Returns true if the given signal is driven as 0 or 1.
 # Otherwise returns false (e.g. for logic X, Z, etc).
@@ -164,22 +171,22 @@ async def test_external_reset(dut):
     # Clock sync:
     await ClockCycles(dut.clk, 1)
 
-    
-# @cocotb.test()
-# async def test_frame0(dut):
-#     clock = init_design_clock(dut)
-#     # Now we should be able to await 420,001 clock cycles and prove
-#     # that a full frame (plus 1 clock) completes:
-#     await ClockCycles(dut.clk, 420_001)
 
-#     #SMELL: For the real world, we could consider making our firmware
-#     # use an LA line to reset the design once GPIO setup is complete,
-#     # or not worry about it at all (since it will generate a display
-#     # in good time anyway) or we could even: (a) supply the serial_load
-#     # into our design, and let it self-reset; or (b) just use a timed
-#     # external reset or leave that reset up to the user via pushbutton.
+##############################################################################
+### test_frame0:
+### Generate the first full frame after issuing a reset.
+### At the moment this doesn't assert any tests, but rather just ensures
+### we capture a good continuation of the VCD to examine.
+##############################################################################
+@cocotb.test()
+async def test_frame0(dut):
+    clock = init_design_clock(dut)
 
+    await external_reset_cycle(dut)
 
+    # Now we should be able to await 420,001 clock cycles and prove
+    # that a full frame (plus 1 clock) completes:
+    await ClockCycles(dut.clk, 420_001)
 
 
 # async def reset_solo_squash(dut):

@@ -17,35 +17,36 @@
 `timescale 1ns / 1ps
 
 //NOTE: This would typically be instantiated with the name `mprj`
-// inside user_project_wrapper.v
-module solo_squash_caravel(
+// inside user_project_wrapper.v (UPW)
+module solo_squash_caravel (
 `ifdef USE_POWER_PINS
     inout vccd1,      // User area 1 1.8V supply
     inout vssd1,      // User area 1 digital ground
 `endif
     // Wishbone Slave ports (WB MI A)
-    input                       wb_clk_i,
-    input                       wb_rst_i,
-    // The following stuff is not (yet) needed for our design:
-    // // MGMT SoC Wishbone Slave
-    // input                       wbs_stb_i,
-    // input                       wbs_cyc_i,
-    // input                       wbs_we_i,
-    // input [3:0]                 wbs_sel_i,
-    // input [31:0]                wbs_dat_i,
-    // input [31:0]                wbs_adr_i,
-    // output                      wbs_ack_o,
-    // output [31:0]               wbs_dat_o,
-    // // Logic Analyzer Signals
-    input  [127:0]              la_data_in,
-    // output [127:0]              la_data_out,
-    // input  [127:0]              la_oenb,
-    // // User maskable interrupt signals
-    // output [2:0]                user_irq,
-    // IOs
-    input  [`MPRJ_IO_PADS-1:0]  io_in,
-    output [`MPRJ_IO_PADS-1:0]  io_out,
-    output [`MPRJ_IO_PADS-1:0]  io_oeb
+    input           wb_clk_i,
+    input           wb_rst_i,
+
+    input           gpio_ready, // Typically la_data_in[32] and feeds back out to debug_gpio_ready via GPIO[20].
+
+    input           ext_reset_n,    // Usually IO[8]
+    input           pause_n,        // Usually IO[9]
+    input           new_game_n,     // Usually IO[10]
+    input           down_key_n,     // Usually IO[11]
+    input           up_key_n,       // Usually IO[12]
+
+    output          red,            // Usually IO[13]
+    output          green,          // Usually IO[14]
+    output          blue,           // Usually IO[15]
+    output          hsync,          // Usually IO[16]
+    output          vsync,          // Usually IO[17]
+    output          speaker,        // Usually IO[18]
+
+    output          debug_design_reset, // Usually IO[19]
+    output          debug_gpio_ready,   // Usually IO[20]
+
+    output [5:0]    design_oeb,     // Usually io_oeb[18:13]
+    output [1:0]    debug_oeb       // Usually io_oeb[20:19]
 );
 
     //NOTE: Our design avoids using IO[7:0] because mgmt core uses this.
@@ -54,25 +55,26 @@ module solo_squash_caravel(
     // If using external reset (typically called ext_reset_n), note that it
     // is active-low and normally expected to be pulled high
     // (but brought low by a pushbutton):
-    wire design_reset = wb_rst_i | ~io_in[8];
+    wire design_reset = wb_rst_i | ~ext_reset_n;
     //SMELL: ext_reset_n could be indeterminate before GPIOs are initialised!
-    //SMELL: io_in[8], if driven by a button, lacks metastability mitigation.
+    //SMELL: ext_reset_n, coming from io_in[8], if driven by a button,
+    // lacks metastability mitigation.
     // Maybe we should put a double DFF buffer in here, for it?
 
     // Output enables are active-low. During reset, we want them hi-Z,
     // so set corresponding io_oeb lines high.
-    assign io_oeb[18:13] = {6{design_reset}};
+    assign design_oeb = {6{design_reset}};
     // IO[20:19] are always outputting, because they're test pins:
-    assign io_oeb[20:19] = 2'b00;
+    assign debug_oeb = 2'b00;
 
-    // For testing purposes, we expose our internal design_reset and
-    // internal LA-based "active" signal as GPIO outputs 19 and 20 respectively.
-    // We could've targeted them directly on the RTL tests, but they would otherwise
+    // For testing purposes, we expose our internal "design_reset" and
+    // our internal LA-based "gpio_ready" signal as GPIO outputs 19 and 20 respectively.
+    // We could've targeted them directly on the RTL tests, but they'd then
     // be inaccessible via GL tests if we didn't bring them out as GPIOs.
-    assign io_out[19] = design_reset;
+    assign debug_design_reset = design_reset;
     // This signal is for testing, and is pulsed by our firmware, to tell us
     // when GPIOs have finished being set up. Externally we refer to it as gpio_ready:
-    assign io_out[20] = la_data_in[32]; // gpio_ready.
+    assign debug_gpio_ready = gpio_ready; // gpio_ready.
 
 
     solo_squash game(
@@ -85,18 +87,18 @@ module solo_squash_caravel(
         .clk        (wb_clk_i),
         .reset      (design_reset),
         // Active-low buttons (pulled high by default):
-        .pause_n    (io_in [ 9]),
-        .new_game_n (io_in [10]),
-        .down_key_n (io_in [11]),
-        .up_key_n   (io_in [12]),
+        .pause_n    (pause_n),
+        .new_game_n (new_game_n),
+        .down_key_n (down_key_n),
+        .up_key_n   (up_key_n),
 
         // --- Outputs ---
-        .red        (io_out[13]),
-        .green      (io_out[14]),
-        .blue       (io_out[15]),
-        .hsync      (io_out[16]),
-        .vsync      (io_out[17]),
-        .speaker    (io_out[18])
+        .red        (red),
+        .green      (green),
+        .blue       (blue),
+        .hsync      (hsync),
+        .vsync      (vsync),
+        .speaker    (speaker)
 
         // The following stuff is not (yet) needed for our design:
         // // MGMT SoC Wishbone Slave
