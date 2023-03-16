@@ -51,9 +51,12 @@ coco_test: solo_squash.hex
 	-o sim_build/sim.vvp \
 	solo_squash_tb.v
 
-	TESTCASE=test_start MODULE=test_solo_squash \
+	MODULE=test_solo_squash \
 	vvp -M $$(cocotb-config --prefix)/cocotb/libs -m libcocotbvpi_icarus sim_build/sim.vvp
 	! grep failure results.xml
+#NOTE: Besides MODULE, test can also be prefixed with a comma-separated
+# list of specific tests to be run in order, like this:
+# TESTCASE=test_start,test_frame0
 
 show_results:
 	gtkwave solo_squash.vcd solo_squash3.gtkw
