@@ -171,11 +171,14 @@ for convenience.
 *   [`test/`](./test/): Where we'll start to put files that are needed for formal verification.
     *   `__init__.py`: (empty file) needs to be in here so that Python/cocotb finds our tests.
 *   [`caravel_stuff/`](./caravel_stuff/): Things we'll probably need later for making a proper Caravel UPW.
-    *   `solo_squash_tb.v`: A testbench to be used with cocotb for testing within Caravel (i.e. via `uut`, which I think wraps the UPW). This would normally go in the Caravel project's `verilog/rtl/dv/`.
-    *   `user_project_wrapper.v`: UPW that could be used for this design, which instantiates our "adapter" `solo_squash_caravel`.
+    *   `config.json`: This would go in `caravel_user_project/openlane/solo_squash` and is the OpenLane config for our design.
+    *   `copy_caravel_stuff.sh`: Attempts to copy all of the files in this directory into their respective locations in the `caravel_user_project`. Note that this might be somewhat specific to the Zero to ASIC course.
+    *   `includes.rtl.caravel_user_project`: Replaces the example in `$DESIGNS/verilog/includes/` and specifies Verilog files that make up the total UPW and design.
     *   `Makefile`: to be used inside (say) `verilog/dv/solo_squash` to run tests of our design via cocotb.
     *   `solo_squash.c`: VexRiscv firmware to configure GPIOs for our design.
+    *   `solo_squash_tb.v`: A testbench to be used with cocotb for testing within Caravel (i.e. via `uut`, which I think wraps the UPW). This would normally go in the Caravel project's `verilog/rtl/dv/`.
     *   `test_solo_squash.py`: Tests that are specific to our design when used in Caravel, to be used inside (say) `verilog/dv/solo_squash`. Ideally should follow `test/test_solo_squash.py` closely, but it's probably a WIP right now that's all over the place.
+    *   `user_project_wrapper.v`: UPW that could be used for this design, which instantiates our "adapter" `solo_squash_caravel`.
 
 # Requirements
 

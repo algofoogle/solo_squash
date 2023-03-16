@@ -24,3 +24,6 @@ fi
 cp -v user_project_wrapper.v $T
 
 cp -v includes.rtl.caravel_user_project $DESIGNS/verilog/includes/
+
+mkdir -p $DESIGNS/openlane/solo_squash
+cp -v config.json $DESIGNS/openlane/solo_squash

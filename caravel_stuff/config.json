@@ -1,0 +1,18 @@
+{
+    "DESIGN_NAME": "solo_squash_caravel",
+    "VERILOG_FILES": [
+        "dir::../../verilog/rtl/solo_squash/src/solo_squash_caravel.v",
+        "dir::../../verilog/rtl/solo_squash/src/solo_squash.v"
+    ],
+    "FP_SIZING": "absolute",
+    "DIE_AREA": "0 0 200 200",
+    "CLOCK_PORT": "clk",
+    "CLOCK_PERIOD": 40.0,
+    "DESIGN_IS_CORE": false,
+    "RT_MAX_LAYER": "met4",
+    "VDD_NETS": ["vccd1"],
+    "GND_NETS": ["vssd1"],
+    "pdk::sky130*": {
+        "SYNTH_MAX_FANOUT": 6
+    }
+}
