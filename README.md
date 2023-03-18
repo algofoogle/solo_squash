@@ -150,16 +150,19 @@ When *tested* within Caravel (using cocotb tests), I think we have the following
 hierarchically:
 *   User code: `solo_squash_tb`
 *   ...then Caravel code:   &rarr; `uut` (`caravel`) &rarr; `mprj` (`user_project_wrapper`)
-*   ...finally more user code: &rarr; `mprj` (`solo_squash_caravel`) &rarr; `game` (`solo_squash`)
+*   ...finally more user code: &rarr; `adapter` (`solo_squash_caravel`) &rarr; `game` (`solo_squash`)
 
-Hmm, not so sure about the 2nd `mprj` level. It does look like this is what
-it's called in the various verilog files, but I need to understand that better
-because the *tests* refer to it without that duplication.
+Note that `adapter` was originally a 2nd level called `mprj` from the
+`caravel_user_project` example. With this name change, the existing
+`FP_PDN_MACRO_HOOKS` parameter in a
+`caravel_user_project/openlane/user_project_wrapper/config.json`
+file would also need to be updated.
 
 Note that `solo_squash_tb` includes a few extra wire definitions that assign
 names to the Caravel GPIOs (etc) that we've chosen to use, hence meaning
-that most of the code from the original tests can still use those names
-for convenience.
+that most of the code from the original tests could still use those names
+for convenience. In fact, my aim will be to make better universal tests that
+work with both the Caravel-wrapped design and the bare generic `solo_squash` design.
 
 
 # Contents
@@ -171,15 +174,7 @@ for convenience.
 *   [`test/`](./test/): Where we'll start to put files that are needed for formal verification.
     *   `__init__.py`: (empty file) needs to be in here so that Python/cocotb finds our tests.
 *   [`caravel_stuff/`](./caravel_stuff/): Things we'll probably need later for making a proper Caravel UPW.
-    *   `config.json`: This would go in `caravel_user_project/openlane/solo_squash` and is the OpenLane config for our design.
-    *   `copy_caravel_stuff.sh`: Attempts to copy all of the files in this directory into their respective locations in the `caravel_user_project`. Note that this might be somewhat specific to the Zero to ASIC course.
-    *   `includes.rtl.caravel_user_project`: Replaces the example in `$DESIGNS/verilog/includes/` and specifies Verilog files that make up the total UPW and design.
-    *   `klayout_gds.xml`: Layer Properties file that can be used with KLayout's `-l` option to display GDS layers the way Anton likes them. NOTE: To make it a bit easier to see pin names, you might need to do the following: (1) ensure `met2.label` layer is visible (top and bottom pins); (2) ensure `met3.label` layer is visible (left and right pins); (3) Go to File &rarr; Setup &rarr; Display &rarr; Texts and choose "Times Italic", "Auto" color, text size "2" micron, turn *off* "Apply text scaling and rotation"; (4) optionally turn on View &rarr; Show Layers Without Fill.
-    *   `Makefile`: to be used inside (say) `verilog/dv/solo_squash` to run tests of our design via cocotb.
-    *   `solo_squash.c`: VexRiscv firmware to configure GPIOs for our design.
-    *   `solo_squash_tb.v`: A testbench to be used with cocotb for testing within Caravel (i.e. via `uut`, which I think wraps the UPW). This would normally go in the Caravel project's `verilog/rtl/dv/`.
-    *   `test_solo_squash.py`: Tests that are specific to our design when used in Caravel, to be used inside (say) `verilog/dv/solo_squash`. Ideally should follow `test/test_solo_squash.py` closely, but it's probably a WIP right now that's all over the place.
-    *   `user_project_wrapper.v`: UPW that could be used for this design, which instantiates our "adapter" `solo_squash_caravel`.
+    See its own [README](./caravel_stuff/README.md) for more info.
 
 # Requirements
 
