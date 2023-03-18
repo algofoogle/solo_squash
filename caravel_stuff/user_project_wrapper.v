@@ -91,7 +91,16 @@ module user_project_wrapper #(
     //  https://github.com/algofoogle/solo_squash/blob/main/src/solo_squash_caravel.v
     // ...and solo_squash.v:
     //  https://github.com/algofoogle/solo_squash/blob/main/src/solo_squash.v
-    solo_squash_caravel mprj (
+    //NOTE: I've renamed this instance from "mprj" to "adapter" mostly as
+    // an exercise in showing that it doesn't have to keep the "mprj" name
+    // so long as we update openlane/user_project_wrapper/config.json:FP_PDN_MACRO_HOOKS.
+    // In this case, "adapter" refers to the fact that this specific module just
+    // adapts the otherwise generic "solo_squash" design to the specific IOs
+    // of Caravel, including a tiny bit of glue logic and debug stuff that
+    // normally would be absent/different if we were adapting it to (say) an FPGA board.
+    // From our TB, the full chain to our design now ends up being:
+    // solo_squash_tb.uut.mprj.adapter.game
+    solo_squash_caravel adapter (
     `ifdef USE_POWER_PINS
         .vccd1(vccd1),	// User area 1 1.8V power
         .vssd1(vssd1),	// User area 1 digital ground

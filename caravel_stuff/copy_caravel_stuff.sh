@@ -27,3 +27,5 @@ cp -v includes.rtl.caravel_user_project $DESIGNS/verilog/includes/
 
 mkdir -p $DESIGNS/openlane/solo_squash
 cp -v config.json $DESIGNS/openlane/solo_squash
+
+# klayout_gds.xml -- This can just stay in caravel_stuff for now.
