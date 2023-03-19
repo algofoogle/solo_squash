@@ -49,6 +49,8 @@ void main()
 	// https://caravel-docs.readthedocs.io/en/wavedrom-regs/gpio.html
 	// https://caravel-harness.readthedocs.io/en/latest/gpio.html
 	// ...though it might be outdated??
+	//SMELL: Should these be GPIO_MODE_USER_STD_INPUT_PULLUP to match my
+	// power-on GPIO defaults as specified in user_defines.v?
 	reg_mprj_io_8	= GPIO_MODE_USER_STD_INPUT_NOPULL;	// ext_reset_n
 	reg_mprj_io_9	= GPIO_MODE_USER_STD_INPUT_NOPULL;	// pause_n
 	reg_mprj_io_10	= GPIO_MODE_USER_STD_INPUT_NOPULL;	// new_game_n
