@@ -16,5 +16,6 @@ The contents of this folder include:
 *   `solo_squash*.gtkw`: GTKWave "Save Files" that can just be used to visualise any of our design's generated `*.vcd` files in a particular way. Mostly just for convenience.
 *   `test_solo_squash.py`: Tests that are specific to our design when used in Caravel, to be used inside (say) `verilog/dv/solo_squash`. Ideally should follow `test/test_solo_squash.py` closely, but it's probably a WIP right now that's all over the place.
 *   `UPW-config.json`: Would normally be called `caravel_user_project/openlane/user_project_wrapper/config.json` and instantiates our design's GDS inside the Caravel harness.
+*   `user_defines.v`: Copy of `caravel_user_project/rtl/user_defines.v`, specifying the power-on state of GPIOs even before the SoC firmware configures GPIOs.
 *   `user_project_wrapper.v`: UPW that could be used for this design, which instantiates our "adapter" `solo_squash_caravel`.
 *   `docs/solo_squash_upw.png`: Some eye-candy: Hand-built image (using screenshots made by KLayout) to show the overall UPW design, and then close-ups. This is intended to go into `caravel_user_project/docs/` and then be used in `caravel_user_project/README.md`.
