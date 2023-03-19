@@ -47,3 +47,6 @@ cp -v macro.cfg $T
 T="$DESIGNS/README.md"
 backup_target $T
 cp -v CUP-README.md $T
+
+mkdir -p $DESIGNS/docs
+cp -v docs/solo_squash_upw.png $DESIGNS/docs/
