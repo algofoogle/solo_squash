@@ -43,3 +43,7 @@ cp -v UPW-config.json $T
 T="$DESIGNS/openlane/user_project_wrapper/macro.cfg"
 backup_target $T
 cp -v macro.cfg $T
+
+T="$DESIGNS/README.md"
+backup_target $T
+cp -v CUP-README.md $T
