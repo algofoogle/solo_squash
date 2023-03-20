@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2020 Efabless Corporation
+// SPDX-FileCopyrightText: 2023 Anton Maurovic <anton@maurovic.com>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // SPDX-License-Identifier: Apache-2.0
+
 
 // This is Anton's testbench for solo_squash_caravel.
 // It does basic driving and VCD capture.
