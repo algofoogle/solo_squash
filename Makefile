@@ -82,9 +82,8 @@ sim_seed: $(SIM_EXE)
 	echo "Random seed: " $(SEED)
 	@$(SIM_EXE) +verilator+rand+reset+2 +verilator+seed+$(SEED)
 
-
-#SMELL: Should this depend on sim/sim_main.cpp? What about also $(MAIN_VSOURCES)?
-$(SIM_EXE):
+# Build main simulation exe:
+$(SIM_EXE): $(MAIN_VSOURCES) sim/sim_main.cpp sim/main_tb.h sim/testbench.h
 	verilator \
 		--Mdir sim/obj_dir \
 		--cc $(MAIN_VSOURCES) \

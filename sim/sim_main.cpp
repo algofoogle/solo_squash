@@ -27,7 +27,7 @@ using namespace std;
   #include "Vsolo_squash_solo_squash.h" // Needed for accessing "verilator public" stuff.
 #endif
 
-#define FONT_FILE "sim/font-ptmono/PTMono-Regular.ttf"
+#define FONT_FILE "sim/font-cousine/Cousine-Regular.ttf"
 
 // #define DOUBLE_CLOCK
 #ifdef DOUBLE_CLOCK
