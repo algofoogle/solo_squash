@@ -2,51 +2,43 @@
 [*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
 [*] Mon Mar 13 09:45:19 2023
 [*]
-[dumpfile] "/home/zerotoasic/asic_tools/caravel_user_project/verilog/dv/solo_squash/solo_squash.vcd"
+[dumpfile] "/home/zerotoasic/asic_tools/caravel_user_project/verilog/dv/solo_squash_caravel/solo_squash_caravel.vcd"
 [dumpfile_mtime] "Mon Mar 13 07:27:24 2023"
 [dumpfile_size] 6890128
-[savefile] "/home/zerotoasic/asic_tools/caravel_user_project/verilog/dv/solo_squash/solo_squash2.gtkw"
+[savefile] "/home/zerotoasic/asic_tools/caravel_user_project/verilog/dv/solo_squash_caravel/solo_squash2.gtkw"
 [timestart] 14043000000
 [size] 1587 585
 [pos] 142 262
 *-29.000000 14338600000 14338600000 15362600000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
-[treeopen] solo_squash_tb.
-[treeopen] solo_squash_tb.uut.
-[treeopen] solo_squash_tb.uut.gpio_control_in_1[2].gpio_logic_high.
-[treeopen] solo_squash_tb.uut.gpio_control_in_1[2].gpio_logic_high.gpio_logic_high.
-[treeopen] solo_squash_tb.uut.mgmt_buffers.
-[treeopen] solo_squash_tb.uut.mprj.
-[treeopen] solo_squash_tb.uut.padframe.
-[treeopen] solo_squash_tb.uut.padframe.mprj_pads.
 [sst_width] 465
 [signals_width] 126
 [sst_expanded] 1
 [sst_vpaned_height] 243
 @28
-solo_squash_tb.clk
-solo_squash_tb.RSTB
-solo_squash_tb.uut.mprj.wb_rst_i
-solo_squash_tb.ext_reset_n
-solo_squash_tb.design_reset
-solo_squash_tb.hsync
-solo_squash_tb.vsync
-solo_squash_tb.red
+solo_squash_caravel_tb.clk
+solo_squash_caravel_tb.RSTB
+solo_squash_caravel_tb.uut.mprj.wb_rst_i
+solo_squash_caravel_tb.ext_reset_n
+solo_squash_caravel_tb.design_reset
+solo_squash_caravel_tb.hsync
+solo_squash_caravel_tb.vsync
+solo_squash_caravel_tb.red
 @29
-solo_squash_tb.green
+solo_squash_caravel_tb.green
 @28
-solo_squash_tb.blue
-solo_squash_tb.speaker
-solo_squash_tb.gpio
+solo_squash_caravel_tb.blue
+solo_squash_caravel_tb.speaker
+solo_squash_caravel_tb.gpio
 @c00022
-solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
+solo_squash_caravel_tb.uut.padframe.mprj_pads.oeb[37:0]
 @28
-(19)solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
-(20)solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
-(21)solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
-(22)solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
-(23)solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
-(24)solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
-(25)solo_squash_tb.uut.padframe.mprj_pads.oeb[37:0]
+(19)solo_squash_caravel_tb.uut.padframe.mprj_pads.oeb[37:0]
+(20)solo_squash_caravel_tb.uut.padframe.mprj_pads.oeb[37:0]
+(21)solo_squash_caravel_tb.uut.padframe.mprj_pads.oeb[37:0]
+(22)solo_squash_caravel_tb.uut.padframe.mprj_pads.oeb[37:0]
+(23)solo_squash_caravel_tb.uut.padframe.mprj_pads.oeb[37:0]
+(24)solo_squash_caravel_tb.uut.padframe.mprj_pads.oeb[37:0]
+(25)solo_squash_caravel_tb.uut.padframe.mprj_pads.oeb[37:0]
 @1401200
 -group_end
 [pattern_trace] 1

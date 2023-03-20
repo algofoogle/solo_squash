@@ -2,9 +2,9 @@
 # https://github.com/algofoogle/solo_squash/blob/main/test/test_solo_squash.py
 # and it has been modified a little to work within Caravel.
 # Hierarchically, I think we'd have:
-#   User code:      solo_squash_tb
+#   User code:      solo_squash_caravel_tb
 #   Caravel code:   -> uut (caravel) -> mprj (user_project_wrapper)
-#   User code:      -> mprj (solo_squash_caravel) -> game (solo_squash)
+#   User code:      -> adapter (solo_squash_caravel) -> game (solo_squash)
 # Note that solo_squash_tb includes a few extra wire definitions that assign
 # names to the Caravel GPIOs (etc) that we've chosen to use, hence meaning
 # that most of the code from the original tests can still use those names

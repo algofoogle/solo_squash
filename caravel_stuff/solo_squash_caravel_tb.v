@@ -13,18 +13,18 @@
 // limitations under the License.
 // SPDX-License-Identifier: Apache-2.0
 
-// This is Anton's testbench for solo_squash. It does basic driving and
-// VCD capture.
+// This is Anton's testbench for solo_squash_caravel.
+// It does basic driving and VCD capture.
 
 `default_nettype none
 
 `timescale 1 ns / 1 ps
 
-module solo_squash_tb;
+module solo_squash_caravel_tb;
 
     initial begin
-        $dumpfile ("solo_squash.vcd");
-        $dumpvars (0, solo_squash_tb);
+        $dumpfile ("solo_squash_caravel.vcd");
+        $dumpvars (0, solo_squash_caravel_tb);
         #1; // Why is this needed?
     end
 
@@ -104,7 +104,7 @@ module solo_squash_tb;
     );
 
     spiflash #(
-        .FILENAME("solo_squash.hex")
+        .FILENAME("solo_squash_caravel.hex")
     ) spiflash (
         .csb(flash_csb),
         .clk(flash_clk),

@@ -19,11 +19,11 @@ backup_target () {
     fi
 }
 
-SS=$DESIGNS/verilog/dv/solo_squash
+SS=$DESIGNS/verilog/dv/solo_squash_caravel
 mkdir -p $SS
 cp -v Makefile $SS/
 cp -v solo_squash* $SS/
-cp -v test_solo_squash.py $SS/
+cp -v test_solo_squash_caravel.py $SS/
 
 T="$DESIGNS/verilog/rtl/user_project_wrapper.v"
 backup_target $T
@@ -31,8 +31,8 @@ cp -v user_project_wrapper.v $T
 
 cp -v includes.rtl.caravel_user_project $DESIGNS/verilog/includes/
 
-mkdir -p $DESIGNS/openlane/solo_squash
-cp -v config.json $DESIGNS/openlane/solo_squash
+mkdir -p $DESIGNS/openlane/solo_squash_caravel
+cp -v config.json $DESIGNS/openlane/solo_squash_caravel
 
 # klayout_gds.xml -- This can just stay in caravel_stuff for now.
 

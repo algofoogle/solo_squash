@@ -99,7 +99,7 @@ module user_project_wrapper #(
     // of Caravel, including a tiny bit of glue logic and debug stuff that
     // normally would be absent/different if we were adapting it to (say) an FPGA board.
     // From our TB, the full chain to our design now ends up being:
-    // solo_squash_tb.uut.mprj.adapter.game
+    // solo_squash_caravel_tb.uut.mprj.adapter.game
     solo_squash_caravel adapter (
     `ifdef USE_POWER_PINS
         .vccd1(vccd1),	// User area 1 1.8V power

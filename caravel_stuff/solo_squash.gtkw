@@ -2,10 +2,10 @@
 [*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
 [*] Mon Mar 13 07:31:24 2023
 [*]
-[dumpfile] "/home/zerotoasic/asic_tools/caravel_user_project/verilog/dv/solo_squash/solo_squash.vcd"
+[dumpfile] "/home/zerotoasic/asic_tools/caravel_user_project/verilog/dv/solo_squash_caravel/solo_squash_caravel.vcd"
 [dumpfile_mtime] "Mon Mar 13 07:27:24 2023"
 [dumpfile_size] 6890128
-[savefile] "/home/zerotoasic/asic_tools/caravel_user_project/verilog/dv/solo_squash/solo_squash.gtkw"
+[savefile] "/home/zerotoasic/asic_tools/caravel_user_project/verilog/dv/solo_squash_caravel/solo_squash.gtkw"
 [timestart] 0
 [size] 1781 826
 [pos] -1 -1
@@ -15,19 +15,19 @@
 [sst_expanded] 1
 [sst_vpaned_height] 237
 @28
-solo_squash_tb.clk
-solo_squash_tb.power1
-solo_squash_tb.power2
-solo_squash_tb.power3
-solo_squash_tb.power4
-solo_squash_tb.RSTB
-solo_squash_tb.ext_reset_n
-solo_squash_tb.hsync
-solo_squash_tb.vsync
-solo_squash_tb.red
-solo_squash_tb.green
-solo_squash_tb.blue
-solo_squash_tb.speaker
-solo_squash_tb.design_reset
+solo_squash_caravel_tb.clk
+solo_squash_caravel_tb.power1
+solo_squash_caravel_tb.power2
+solo_squash_caravel_tb.power3
+solo_squash_caravel_tb.power4
+solo_squash_caravel_tb.RSTB
+solo_squash_caravel_tb.ext_reset_n
+solo_squash_caravel_tb.hsync
+solo_squash_caravel_tb.vsync
+solo_squash_caravel_tb.red
+solo_squash_caravel_tb.green
+solo_squash_caravel_tb.blue
+solo_squash_caravel_tb.speaker
+solo_squash_caravel_tb.design_reset
 [pattern_trace] 1
 [pattern_trace] 0

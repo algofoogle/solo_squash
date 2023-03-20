@@ -158,7 +158,7 @@ Note that `adapter` was originally a 2nd level called `mprj` from the
 `caravel_user_project/openlane/user_project_wrapper/config.json`
 file would also need to be updated.
 
-Note that `solo_squash_tb` includes a few extra wire definitions that assign
+Note that `solo_squash_caravel_tb` includes a few extra wire definitions that assign
 names to the Caravel GPIOs (etc) that we've chosen to use, hence meaning
 that most of the code from the original tests could still use those names
 for convenience. In fact, my aim will be to make better universal tests that

@@ -15,7 +15,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-### This Makefile is to be used inside (say) verilog/dv/solo_squash
+### This Makefile is to be used inside (say) verilog/dv/solo_squash_caravel
 ### and its purpose is to run tests of our design, within Caravel,
 ### via cocotb.
 
@@ -41,7 +41,7 @@ include $(MCW_ROOT)/verilog/dv/make/cpu.makefile
 include $(MCW_ROOT)/verilog/dv/make/sim.makefile
 
 # Our cocotb tests:
-coco_test: solo_squash.hex
+coco_test: solo_squash_caravel.hex
 	rm -rf sim_build/
 	mkdir sim_build/
 
@@ -49,9 +49,9 @@ coco_test: solo_squash.hex
 	-f$(VERILOG_PATH)/includes/includes.rtl.caravel \
 	-f$(USER_PROJECT_VERILOG)/includes/includes.rtl.$(CONFIG) \
 	-o sim_build/sim.vvp \
-	solo_squash_tb.v
+	solo_squash_caravel_tb.v
 
-	MODULE=test_solo_squash \
+	MODULE=test_solo_squash_caravel \
 	vvp -M $$(cocotb-config --prefix)/cocotb/libs -m libcocotbvpi_icarus sim_build/sim.vvp
 	! grep failure results.xml
 #NOTE: Besides MODULE, test can also be prefixed with a comma-separated
@@ -59,4 +59,4 @@ coco_test: solo_squash.hex
 # TESTCASE=test_start,test_frame0
 
 show_results:
-	gtkwave solo_squash.vcd solo_squash3.gtkw
+	gtkwave solo_squash_caravel.vcd solo_squash3.gtkw

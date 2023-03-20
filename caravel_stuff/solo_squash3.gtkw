@@ -2,83 +2,75 @@
 [*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
 [*] Wed Mar 15 10:27:18 2023
 [*]
-[dumpfile] "/home/zerotoasic/asic_tools/caravel_user_project/verilog/dv/solo_squash/solo_squash.vcd"
+[dumpfile] "/home/zerotoasic/asic_tools/caravel_user_project/verilog/dv/solo_squash_caravel/solo_squash_caravel.vcd"
 [dumpfile_mtime] "Wed Mar 15 04:40:18 2023"
 [dumpfile_size] 6060240
-[savefile] "/home/zerotoasic/asic_tools/caravel_user_project/verilog/dv/solo_squash/solo_squash3.gtkw"
+[savefile] "/home/zerotoasic/asic_tools/caravel_user_project/verilog/dv/solo_squash_caravel/solo_squash3.gtkw"
 [timestart] 698180000
 [size] 2488 1338
 [pos] 344 164
 *-23.600000 761360000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
-[treeopen] solo_squash_tb.
-[treeopen] solo_squash_tb.uut.
-[treeopen] solo_squash_tb.uut.gpio_control_in_1[2].gpio_logic_high.gpio_logic_high.
-[treeopen] solo_squash_tb.uut.mgmt_buffers.
-[treeopen] solo_squash_tb.uut.mprj.
-[treeopen] solo_squash_tb.uut.mprj.adapter.
-[treeopen] solo_squash_tb.uut.padframe.
-[treeopen] solo_squash_tb.uut.padframe.mprj_pads.
 [sst_width] 297
 [signals_width] 232
 [sst_expanded] 1
 [sst_vpaned_height] 652
 @28
-solo_squash_tb.power1
-solo_squash_tb.power2
-solo_squash_tb.power3
-solo_squash_tb.power4
-solo_squash_tb.clk
-solo_squash_tb.RSTB
-solo_squash_tb.uut.mprj.wb_rst_i
-solo_squash_tb.ext_reset_n
-solo_squash_tb.design_reset
-solo_squash_tb.gpio_ready
-solo_squash_tb.hsync
-solo_squash_tb.vsync
-solo_squash_tb.red
-solo_squash_tb.green
-solo_squash_tb.blue
-solo_squash_tb.speaker
+solo_squash_caravel_tb.power1
+solo_squash_caravel_tb.power2
+solo_squash_caravel_tb.power3
+solo_squash_caravel_tb.power4
+solo_squash_caravel_tb.clk
+solo_squash_caravel_tb.RSTB
+solo_squash_caravel_tb.uut.mprj.wb_rst_i
+solo_squash_caravel_tb.ext_reset_n
+solo_squash_caravel_tb.design_reset
+solo_squash_caravel_tb.gpio_ready
+solo_squash_caravel_tb.hsync
+solo_squash_caravel_tb.vsync
+solo_squash_caravel_tb.red
+solo_squash_caravel_tb.green
+solo_squash_caravel_tb.blue
+solo_squash_caravel_tb.speaker
 @200
 -
 -
 -
 @28
-solo_squash_tb.uut.mprj.adapter.game.ballDirX
-solo_squash_tb.uut.mprj.adapter.game.ballDirY
+solo_squash_caravel_tb.uut.mprj.adapter.game.ballDirX
+solo_squash_caravel_tb.uut.mprj.adapter.game.ballDirY
 @22
-solo_squash_tb.uut.mprj.adapter.game.ballX[8:0]
-solo_squash_tb.uut.mprj.adapter.game.ballY[7:0]
+solo_squash_caravel_tb.uut.mprj.adapter.game.ballX[8:0]
+solo_squash_caravel_tb.uut.mprj.adapter.game.ballY[7:0]
 @28
-solo_squash_tb.uut.mprj.adapter.game.hit
-solo_squash_tb.uut.mprj.adapter.game.hmax
-solo_squash_tb.uut.mprj.adapter.game.inBallX
-solo_squash_tb.uut.mprj.adapter.game.inBallY
-solo_squash_tb.uut.mprj.adapter.game.inPaddle
+solo_squash_caravel_tb.uut.mprj.adapter.game.hit
+solo_squash_caravel_tb.uut.mprj.adapter.game.hmax
+solo_squash_caravel_tb.uut.mprj.adapter.game.inBallX
+solo_squash_caravel_tb.uut.mprj.adapter.game.inBallY
+solo_squash_caravel_tb.uut.mprj.adapter.game.inPaddle
 @22
-solo_squash_tb.uut.mprj.adapter.game.paddle[8:0]
+solo_squash_caravel_tb.uut.mprj.adapter.game.paddle[8:0]
 @28
-solo_squash_tb.uut.mprj.adapter.game.visible
-solo_squash_tb.uut.mprj.adapter.game.vmax
-solo_squash_tb.uut.mprj.adapter.game.wallB
-solo_squash_tb.uut.mprj.adapter.game.wallL
-solo_squash_tb.uut.mprj.adapter.game.wallR
-solo_squash_tb.uut.mprj.adapter.game.wallT
+solo_squash_caravel_tb.uut.mprj.adapter.game.visible
+solo_squash_caravel_tb.uut.mprj.adapter.game.vmax
+solo_squash_caravel_tb.uut.mprj.adapter.game.wallB
+solo_squash_caravel_tb.uut.mprj.adapter.game.wallL
+solo_squash_caravel_tb.uut.mprj.adapter.game.wallR
+solo_squash_caravel_tb.uut.mprj.adapter.game.wallT
 @8022
-solo_squash_tb.uut.mprj.adapter.game.h[9:0]
+solo_squash_caravel_tb.uut.mprj.adapter.game.h[9:0]
 @20000
 -
 -
 @8022
-solo_squash_tb.uut.mprj.adapter.game.v[9:0]
+solo_squash_caravel_tb.uut.mprj.adapter.game.v[9:0]
 @20000
 -
 -
 @22
-solo_squash_tb.uut.mprj.adapter.game.h1[4:0]
-solo_squash_tb.uut.mprj.adapter.game.v1[4:0]
-solo_squash_tb.uut.mprj.adapter.game.offset[4:0]
-solo_squash_tb.uut.mprj.adapter.game.oh[9:0]
-solo_squash_tb.uut.mprj.adapter.game.ov[9:0]
+solo_squash_caravel_tb.uut.mprj.adapter.game.h1[4:0]
+solo_squash_caravel_tb.uut.mprj.adapter.game.v1[4:0]
+solo_squash_caravel_tb.uut.mprj.adapter.game.offset[4:0]
+solo_squash_caravel_tb.uut.mprj.adapter.game.oh[9:0]
+solo_squash_caravel_tb.uut.mprj.adapter.game.ov[9:0]
 [pattern_trace] 1
 [pattern_trace] 0
