@@ -1,7 +1,7 @@
 {
     "DESIGN_NAME": "user_project_wrapper",
     "VERILOG_FILES": ["dir::../../verilog/rtl/defines.v", "dir::../../verilog/rtl/user_project_wrapper.v"],
-    "CLOCK_PERIOD": 40,
+    "CLOCK_PERIOD": 10,
     "CLOCK_PORT": "wb_clk_i",
     "CLOCK_NET": "adapter.wb_clk_i",
     "FP_PDN_MACRO_HOOKS": "adapter vccd1 vssd1 vccd1 vssd1",

@@ -21,8 +21,9 @@
 
 /*
     Solo Squash init firmware:
-    -	Configures MPRJ IO[12:8] as inputs
-    -	Configures MPRJ IO[18:13] as outputs
+    -   Configures MPRJ IO[12:8] as inputs.
+    -   Configures MPRJ IO[20:13] as outputs.
+    -   Pulses LA[32] when GPIO config is finished. This is seen via GPIO[20].
 */
 
 void main()
@@ -49,21 +50,21 @@ void main()
     // https://caravel-harness.readthedocs.io/en/latest/gpio.html
     // ...though it might be outdated??
     // See also: user_defines.v
-    reg_mprj_io_8	= GPIO_MODE_USER_STD_INPUT_PULLUP;	// ext_reset_n
-    reg_mprj_io_9	= GPIO_MODE_USER_STD_INPUT_PULLUP;	// pause_n
-    reg_mprj_io_10	= GPIO_MODE_USER_STD_INPUT_PULLUP;	// new_game_n
-    reg_mprj_io_11	= GPIO_MODE_USER_STD_INPUT_PULLUP;	// down_key_n
-    reg_mprj_io_12	= GPIO_MODE_USER_STD_INPUT_PULLUP;	// up_key_n
+    reg_mprj_io_8   = GPIO_MODE_USER_STD_INPUT_PULLUP;  // ext_reset_n
+    reg_mprj_io_9   = GPIO_MODE_USER_STD_INPUT_PULLUP;  // pause_n
+    reg_mprj_io_10  = GPIO_MODE_USER_STD_INPUT_PULLUP;  // new_game_n
+    reg_mprj_io_11  = GPIO_MODE_USER_STD_INPUT_PULLUP;  // down_key_n
+    reg_mprj_io_12  = GPIO_MODE_USER_STD_INPUT_PULLUP;  // up_key_n
     // Configure MPRJ IO[18:13] as outputs:
-    reg_mprj_io_13	= GPIO_MODE_USER_STD_OUTPUT;		// red
-    reg_mprj_io_14	= GPIO_MODE_USER_STD_OUTPUT;		// green
-    reg_mprj_io_15	= GPIO_MODE_USER_STD_OUTPUT;		// blue
-    reg_mprj_io_16	= GPIO_MODE_USER_STD_OUTPUT;		// hsync
-    reg_mprj_io_17	= GPIO_MODE_USER_STD_OUTPUT;		// vsync
-    reg_mprj_io_18	= GPIO_MODE_USER_STD_OUTPUT;		// speaker
+    reg_mprj_io_13  = GPIO_MODE_USER_STD_OUTPUT;        // red
+    reg_mprj_io_14  = GPIO_MODE_USER_STD_OUTPUT;        // green
+    reg_mprj_io_15  = GPIO_MODE_USER_STD_OUTPUT;        // blue
+    reg_mprj_io_16  = GPIO_MODE_USER_STD_OUTPUT;        // hsync
+    reg_mprj_io_17  = GPIO_MODE_USER_STD_OUTPUT;        // vsync
+    reg_mprj_io_18  = GPIO_MODE_USER_STD_OUTPUT;        // speaker
     // These are also outputs, but just for testing:
-    reg_mprj_io_19	= GPIO_MODE_USER_STD_OUTPUT;		// design_reset
-    reg_mprj_io_20	= GPIO_MODE_USER_STD_OUTPUT;		// gpio_ready
+    reg_mprj_io_19  = GPIO_MODE_USER_STD_OUTPUT;        // design_reset
+    reg_mprj_io_20  = GPIO_MODE_USER_STD_OUTPUT;        // gpio_ready
 
     // Kick off the very long bit shift process into the GPIO control registers...
     reg_mprj_xfer = 1;
@@ -74,11 +75,12 @@ void main()
     // from relatively slow Flash SPI serial reads.
 
     // Pulse la_data_in[32] (LSB of 2nd bank of LA) to show that GPIOs are now active:
-    reg_la1_iena = 0; 			// Active high; 0 means "disable" input.
-    reg_la1_oenb = 0xffffffff;	// Active high (despite 'b' normally meaning AL); 1 means "enable" output. This was changed in the era of Litex/VexRiscv, I think, but hte name was retained.
-                                // NOTE: Could I just set this to 1 since I'm actually using the LSB?
-    reg_la1_data = 1;			// Bit 0 goes high...
-    reg_la1_data = 0;			// ...and low again.
+    reg_la1_iena = 0;           // Active high; 0 means "disable" input.
+    reg_la1_oenb = 0xffffffff;	// Active high (despite 'b' normally meaning AL); 1 means "enable" output.
+                                // This was changed in the era of Litex/VexRiscv, I think, but the name was retained.
+                                // NOTE: Could I just set this to 1 since I'm actually just using the LSB?
+    reg_la1_data = 1;           // Bit 0 goes high...
+    reg_la1_data = 0;           // ...and low again.
     //NOTE: This goes back out via GPIO[20], and can be used both for physical testing/debugging,
     // and also for our tests to sync.
 
