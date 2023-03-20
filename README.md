@@ -167,7 +167,7 @@ make show_results
 
 When *tested* within Caravel (using cocotb tests), I think we have the following
 hierarchically:
-*   User code: `solo_squash_tb`
+*   User code: `solo_squash_caravel_tb`
 *   ...then Caravel code:   &rarr; `uut` (`caravel`) &rarr; `mprj` (`user_project_wrapper`)
 *   ...finally more user code: &rarr; `adapter` (`solo_squash_caravel`) &rarr; `game` (`solo_squash`)
 

@@ -64,7 +64,7 @@ T="$DESIGNS/README.md"
 backup_target $T
 cp -v CUP-README.md $T
 
-T="$DESIGNS/rtl/user_defines.v"
+T="$DESIGNS/verlog/rtl/user_defines.v"
 backup_target $t
 cp -v user_defines.v $T
 
