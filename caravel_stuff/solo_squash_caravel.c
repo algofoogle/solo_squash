@@ -26,7 +26,8 @@
     -   Pulses LA[32] when GPIO config is finished. This is seen via GPIO[20].
 */
 
-// #define INPUT_MODE  GPIO_MODE_USER_STD_INPUT_PULLUP
+// #define INPUT_MODE  0x0c02 // The OLD value for PULLUP, no longer considered valid?
+// #define INPUT_MODE  GPIO_MODE_USER_STD_INPUT_PULLUP //SMELL: Caravel PULLUP/DOWN might be broken; avoid for now.
 #define INPUT_MODE  GPIO_MODE_USER_STD_INPUT_NOPULL
 
 void main()

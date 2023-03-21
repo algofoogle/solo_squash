@@ -30,6 +30,7 @@ import cocotb
 import os
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, FallingEdge, ClockCycles, Timer
+from cocotb.types import Logic
 
 
 SIM_CLOCK_HZ = 25_000_000
@@ -90,6 +91,12 @@ async def test_start(dut):
     dut.power2.value = 0
     dut.power3.value = 0
     dut.power4.value = 0
+    # Leave our key GPIO inputs disconnected for now:
+    #NOTE: Don't need to assign these because I think cocotb defaults to 'z' if not otherwise assigned:
+    # dut.up_key_n.value      = Logic('z')
+    # dut.down_key_n.value    = Logic('z')
+    # dut.new_game_n.value    = Logic('z')
+    # dut.pause_n.value       = Logic('z')
 
     # Bring up each of the power rails gradually, 8 clocks (320ns) apart:
     await ClockCycles(dut.clk, 8);      dut.power1.value = 1
