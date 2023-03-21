@@ -26,6 +26,9 @@
     -   Pulses LA[32] when GPIO config is finished. This is seen via GPIO[20].
 */
 
+// #define INPUT_MODE  GPIO_MODE_USER_STD_INPUT_PULLUP
+#define INPUT_MODE  GPIO_MODE_USER_STD_INPUT_NOPULL
+
 void main()
 {
     /* 
@@ -44,17 +47,17 @@ void main()
 
     */
 
-    // Configure MPRJ IO[12:8] as inputs with pullups:
+    // Configure MPRJ IO[12:8] as inputs (optionally with pullups; see INPUT_MODE define above):
     // See also: reg_gpio_pu:
     // https://caravel-docs.readthedocs.io/en/wavedrom-regs/gpio.html
     // https://caravel-harness.readthedocs.io/en/latest/gpio.html
     // ...though it might be outdated??
     // See also: user_defines.v
-    reg_mprj_io_8   = GPIO_MODE_USER_STD_INPUT_PULLUP;  // ext_reset_n
-    reg_mprj_io_9   = GPIO_MODE_USER_STD_INPUT_PULLUP;  // pause_n
-    reg_mprj_io_10  = GPIO_MODE_USER_STD_INPUT_PULLUP;  // new_game_n
-    reg_mprj_io_11  = GPIO_MODE_USER_STD_INPUT_PULLUP;  // down_key_n
-    reg_mprj_io_12  = GPIO_MODE_USER_STD_INPUT_PULLUP;  // up_key_n
+    reg_mprj_io_8   = INPUT_MODE;                       // ext_reset_n
+    reg_mprj_io_9   = INPUT_MODE;                       // pause_n
+    reg_mprj_io_10  = INPUT_MODE;                       // new_game_n
+    reg_mprj_io_11  = INPUT_MODE;                       // down_key_n
+    reg_mprj_io_12  = INPUT_MODE;                       // up_key_n
     // Configure MPRJ IO[18:13] as outputs:
     reg_mprj_io_13  = GPIO_MODE_USER_STD_OUTPUT;        // red
     reg_mprj_io_14  = GPIO_MODE_USER_STD_OUTPUT;        // green
