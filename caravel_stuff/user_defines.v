@@ -55,52 +55,6 @@
 // `define INPUT_MODE  `GPIO_MODE_USER_STD_INPUT_PULLUP //SMELL: As seen in solo_squash_caravel.c, too, PULLUP/DOWN might be broken in Caravel?
 `define INPUT_MODE  `GPIO_MODE_USER_STD_INPUT_NOPULL
 
-//`define TEST_INVALID_GPIO_DEFAULTS
-
-`ifdef TEST_INVALID_GPIO_DEFAULTS
-    // These are the original GPIO defaults (all invalid), but normally this code isn't used anyway.
-    // Hopefully mpw_precheck doesn't naively trip up on these (and instead only sees the `else` block).
-
-`define USER_CONFIG_GPIO_5_INIT  `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_6_INIT  `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_7_INIT  `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_8_INIT  `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_9_INIT  `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_10_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_11_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_12_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_13_INIT `GPIO_MODE_INVALID
-
-// Configurations of GPIO 14 to 24 are used on caravel but not caravan.
-`define USER_CONFIG_GPIO_14_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_15_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_16_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_17_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_18_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_19_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_20_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_21_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_22_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_23_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_24_INIT `GPIO_MODE_INVALID
-
-`define USER_CONFIG_GPIO_25_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_26_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_27_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_28_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_29_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_30_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_31_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_32_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_33_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_34_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_35_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_36_INIT `GPIO_MODE_INVALID
-`define USER_CONFIG_GPIO_37_INIT `GPIO_MODE_INVALID
-
-`else
-    // These are the GPIO defaults that should actually be used.
-
 `define USER_CONFIG_GPIO_5_INIT  `GPIO_MODE_MGMT_STD_INPUT_NOPULL   // Reserved for SoC (ser_rx);   borrowed from caravel/verilog/rtl/user_defines.v
 `define USER_CONFIG_GPIO_6_INIT  `GPIO_MODE_MGMT_STD_INPUT_NOPULL   // Reserved for SoC (ser_tx);   borrowed from caravel/verilog/rtl/user_defines.v
 `define USER_CONFIG_GPIO_7_INIT  `GPIO_MODE_MGMT_STD_INPUT_NOPULL   // Reserved for SoC (irq);      borrowed from caravel/verilog/rtl/user_defines.v
@@ -137,7 +91,5 @@
 `define USER_CONFIG_GPIO_35_INIT `GPIO_MODE_MGMT_STD_INPUT_NOPULL   // Not used.
 `define USER_CONFIG_GPIO_36_INIT `GPIO_MODE_MGMT_STD_INPUT_NOPULL   // Reserved for SoC; borrowed from caravel/verilog/rtl/user_defines.v
 `define USER_CONFIG_GPIO_37_INIT `GPIO_MODE_MGMT_STD_INPUT_NOPULL   // Reserved for SoC; borrowed from caravel/verilog/rtl/user_defines.v
-
-`endif // TEST_INVALID_GPIO_DEFAULTS
 
 `endif // __USER_DEFINES_H
