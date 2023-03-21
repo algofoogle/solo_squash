@@ -1,19 +1,23 @@
 [*]
 [*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
-[*] Wed Mar 15 10:27:18 2023
+[*] Tue Mar 21 00:37:33 2023
 [*]
 [dumpfile] "/home/zerotoasic/asic_tools/caravel_user_project/verilog/dv/solo_squash_caravel/solo_squash_caravel.vcd"
-[dumpfile_mtime] "Wed Mar 15 04:40:18 2023"
-[dumpfile_size] 6060240
+[dumpfile_mtime] "Tue Mar 21 00:22:36 2023"
+[dumpfile_size] 5458891
 [savefile] "/home/zerotoasic/asic_tools/caravel_user_project/verilog/dv/solo_squash_caravel/solo_squash3.gtkw"
-[timestart] 698180000
-[size] 2488 1338
-[pos] 344 164
-*-23.600000 761360000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[timestart] 491700000
+[size] 3128 1338
+[pos] 462 260
+*-25.600000 690680000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] solo_squash_caravel_tb.
+[treeopen] solo_squash_caravel_tb.uut.mprj.
 [sst_width] 297
-[signals_width] 232
+[signals_width] 206
 [sst_expanded] 1
 [sst_vpaned_height] 652
+@200
+-TB stimuli
 @28
 solo_squash_caravel_tb.power1
 solo_squash_caravel_tb.power2
@@ -23,6 +27,21 @@ solo_squash_caravel_tb.clk
 solo_squash_caravel_tb.RSTB
 solo_squash_caravel_tb.uut.mprj.wb_rst_i
 solo_squash_caravel_tb.ext_reset_n
+solo_squash_caravel_tb.up_key_n
+solo_squash_caravel_tb.down_key_n
+solo_squash_caravel_tb.new_game_n
+solo_squash_caravel_tb.pause_n
+@200
+-Design inputs
+@28
++{ext_reset_n} solo_squash_caravel_tb.uut.mprj.adapter.ext_reset_n
+solo_squash_caravel_tb.uut.mprj.adapter.up_key_n
+solo_squash_caravel_tb.uut.mprj.adapter.down_key_n
+solo_squash_caravel_tb.uut.mprj.adapter.new_game_n
+solo_squash_caravel_tb.uut.mprj.adapter.pause_n
+@200
+-GPIO outputs
+@28
 solo_squash_caravel_tb.design_reset
 solo_squash_caravel_tb.gpio_ready
 solo_squash_caravel_tb.hsync
@@ -32,9 +51,7 @@ solo_squash_caravel_tb.green
 solo_squash_caravel_tb.blue
 solo_squash_caravel_tb.speaker
 @200
--
--
--
+-Design internal
 @28
 solo_squash_caravel_tb.uut.mprj.adapter.game.ballDirX
 solo_squash_caravel_tb.uut.mprj.adapter.game.ballDirY
@@ -56,6 +73,12 @@ solo_squash_caravel_tb.uut.mprj.adapter.game.wallB
 solo_squash_caravel_tb.uut.mprj.adapter.game.wallL
 solo_squash_caravel_tb.uut.mprj.adapter.game.wallR
 solo_squash_caravel_tb.uut.mprj.adapter.game.wallT
+@22
+solo_squash_caravel_tb.uut.mprj.adapter.game.h1[4:0]
+solo_squash_caravel_tb.uut.mprj.adapter.game.v1[4:0]
+solo_squash_caravel_tb.uut.mprj.adapter.game.offset[4:0]
+solo_squash_caravel_tb.uut.mprj.adapter.game.oh[9:0]
+solo_squash_caravel_tb.uut.mprj.adapter.game.ov[9:0]
 @8022
 solo_squash_caravel_tb.uut.mprj.adapter.game.h[9:0]
 @20000
@@ -66,11 +89,5 @@ solo_squash_caravel_tb.uut.mprj.adapter.game.v[9:0]
 @20000
 -
 -
-@22
-solo_squash_caravel_tb.uut.mprj.adapter.game.h1[4:0]
-solo_squash_caravel_tb.uut.mprj.adapter.game.v1[4:0]
-solo_squash_caravel_tb.uut.mprj.adapter.game.offset[4:0]
-solo_squash_caravel_tb.uut.mprj.adapter.game.oh[9:0]
-solo_squash_caravel_tb.uut.mprj.adapter.game.ov[9:0]
 [pattern_trace] 1
 [pattern_trace] 0
