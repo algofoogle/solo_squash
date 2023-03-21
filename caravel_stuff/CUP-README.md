@@ -63,13 +63,17 @@ Core:
 
 The following may only be operational after SoC firmware has finished executing
 (but that's within a few hundred microseconds of power-up, and only part-way
-through the first frame anyway):
+through the first frame anyway).
     GPIO[ 8]    <- ext_reset_n  (External active-low reset)
     GPIO[ 9]    <- pause_n      (Momentary pause, active-low)
     GPIO[10]    <- new_game_n   (Reset game state without full reset, active-low)
     GPIO[11]    <- up_key_n     (Move paddle up, active-low)
     GPIO[12]    <- down_key_n   (Move paddle down, active-low)
 ```
+
+Note that the `GPIO[12:8]` inputs may or may not have pullups enabled, depending on where
+I get up to. You can check [`user_defines.v`](./verilog/rtl/user_defines.v) and the definition
+of `INPUT_MODE` for more info.
 
 Its outputs are:
 ```

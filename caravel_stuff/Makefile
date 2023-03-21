@@ -39,12 +39,18 @@ include $(MCW_ROOT)/verilog/dv/make/var.makefile
 include $(MCW_ROOT)/verilog/dv/make/cpu.makefile
 include $(MCW_ROOT)/verilog/dv/make/sim.makefile
 
-# Our cocotb tests:
+# Our cocotb tests.
+# Note that this adds includes.rtl.anton_testing, which tries to
+# define the User GPIO defaults before the rest of the Caravel stuff,
+# allowing us to test and see the effect of actual preset GPIO config
+# from the get-go, instead of having to wait for the firmware.
+# I don't know if there's a better way to do this, but this seems OK...?
 coco_test: solo_squash_caravel.hex
 	rm -rf sim_build/
 	mkdir sim_build/
 
 	iverilog -Ttyp -DFUNCTIONAL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
+	-f$(USER_PROJECT_VERILOG)/includes/includes.rtl.anton_testing \
 	-f$(VERILOG_PATH)/includes/includes.rtl.caravel \
 	-f$(USER_PROJECT_VERILOG)/includes/includes.rtl.$(CONFIG) \
 	-o sim_build/sim.vvp \

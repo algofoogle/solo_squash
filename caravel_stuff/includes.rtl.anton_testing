@@ -1,0 +1,3 @@
+# Anton trying to hack GPIO defaults in before everything else gets compiled,
+# for the purposes of testing with cocotb:
+-v $(USER_PROJECT_VERILOG)/rtl/user_defines.v

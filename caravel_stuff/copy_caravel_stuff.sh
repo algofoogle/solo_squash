@@ -60,6 +60,7 @@ backup_target $T
 cp -v user_project_wrapper.v $T && ok || bad
 
 cp -v includes.rtl.caravel_user_project $DESIGNS/verilog/includes/ && ok || bad
+cp -v includes.rtl.anton_testing        $DESIGNS/verilog/includes/ && ok || bad
 
 mkdir -p $DESIGNS/openlane/solo_squash_caravel
 cp -v config.json $DESIGNS/openlane/solo_squash_caravel && ok || bad
