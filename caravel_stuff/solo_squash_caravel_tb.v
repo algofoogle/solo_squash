@@ -24,6 +24,23 @@
 module solo_squash_caravel_tb;
 
     initial begin
+        $display ("USER_CONFIG_GPIO_5_INIT  = %x (%b)", `USER_CONFIG_GPIO_5_INIT,  `USER_CONFIG_GPIO_5_INIT);
+        $display ("USER_CONFIG_GPIO_6_INIT  = %x (%b)", `USER_CONFIG_GPIO_6_INIT,  `USER_CONFIG_GPIO_6_INIT);
+        $display ("USER_CONFIG_GPIO_7_INIT  = %x (%b)", `USER_CONFIG_GPIO_7_INIT,  `USER_CONFIG_GPIO_7_INIT);
+        $display ("USER_CONFIG_GPIO_8_INIT  = %x (%b)", `USER_CONFIG_GPIO_8_INIT,  `USER_CONFIG_GPIO_8_INIT);
+        $display ("USER_CONFIG_GPIO_9_INIT  = %x (%b)", `USER_CONFIG_GPIO_9_INIT,  `USER_CONFIG_GPIO_9_INIT);
+        $display ("USER_CONFIG_GPIO_10_INIT = %x (%b)", `USER_CONFIG_GPIO_10_INIT, `USER_CONFIG_GPIO_10_INIT);
+        $display ("USER_CONFIG_GPIO_11_INIT = %x (%b)", `USER_CONFIG_GPIO_11_INIT, `USER_CONFIG_GPIO_11_INIT);
+        $display ("USER_CONFIG_GPIO_12_INIT = %x (%b)", `USER_CONFIG_GPIO_12_INIT, `USER_CONFIG_GPIO_12_INIT);
+        $display ("USER_CONFIG_GPIO_13_INIT = %x (%b)", `USER_CONFIG_GPIO_13_INIT, `USER_CONFIG_GPIO_13_INIT);
+        $display ("USER_CONFIG_GPIO_14_INIT = %x (%b)", `USER_CONFIG_GPIO_14_INIT, `USER_CONFIG_GPIO_14_INIT);
+        $display ("USER_CONFIG_GPIO_15_INIT = %x (%b)", `USER_CONFIG_GPIO_15_INIT, `USER_CONFIG_GPIO_15_INIT);
+        $display ("USER_CONFIG_GPIO_16_INIT = %x (%b)", `USER_CONFIG_GPIO_16_INIT, `USER_CONFIG_GPIO_16_INIT);
+        $display ("USER_CONFIG_GPIO_17_INIT = %x (%b)", `USER_CONFIG_GPIO_17_INIT, `USER_CONFIG_GPIO_17_INIT);
+        $display ("USER_CONFIG_GPIO_18_INIT = %x (%b)", `USER_CONFIG_GPIO_18_INIT, `USER_CONFIG_GPIO_18_INIT);
+        $display ("USER_CONFIG_GPIO_19_INIT = %x (%b)", `USER_CONFIG_GPIO_19_INIT, `USER_CONFIG_GPIO_19_INIT);
+        $display ("USER_CONFIG_GPIO_20_INIT = %x (%b)", `USER_CONFIG_GPIO_20_INIT, `USER_CONFIG_GPIO_20_INIT);
+        $display ("USER_CONFIG_GPIO_21_INIT = %x (%b)", `USER_CONFIG_GPIO_21_INIT, `USER_CONFIG_GPIO_21_INIT);
         $dumpfile ("solo_squash_caravel.vcd");
         $dumpvars (0, solo_squash_caravel_tb);
         #1; // Why is this needed?
