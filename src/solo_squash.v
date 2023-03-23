@@ -97,21 +97,15 @@ module solo_squash #(
   reg [8:0]   ballX;
   reg [7:0]   ballY;
 
-
   wire hmax     = h == (HFULL-1);
   wire vmax     = v == (VFULL-1);
-
   wire wallT    = v <  wallT_LIMIT;
   wire wallB    = v >= wallB_LIMIT;
   wire wallL    = h <  wallL_LIMIT;
   wire wallR    = h >= wallR_LIMIT;
-
-
   wire visible  = h < HRES && v < VRES;
-
   wire up       = ~up_key_n;
   wire down     = ~down_key_n;
-
   always @(posedge clk) begin
     if (reset)
     begin
