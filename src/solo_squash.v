@@ -79,12 +79,6 @@ module solo_squash #(
 
 
 
-
-
-
-
-
-
   reg [9:0]   h;
   reg [9:0]   v;
   reg         inPaddle;
@@ -96,7 +90,6 @@ module solo_squash #(
   reg [8:0]   paddle;
   reg [8:0]   ballX;
   reg [7:0]   ballY;
-
   wire hmax     = h == (HFULL-1);
   wire vmax     = v == (VFULL-1);
   wire wallT    = v <  wallT_LIMIT;
