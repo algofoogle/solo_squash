@@ -199,86 +199,36 @@ module solo_squash #(
           hit <= 0;
         end
         else if (v==paddle+paddleSize) inPaddle <= 0;
-
-
         inBallY <= inBallY ? v[9:1]!=ballY+ballSize : v[8:1]==ballY;
-
-
         if (vmax && 1==pause_n) begin
-
-
           offset <= offset + 1;
-
-
-
-
-
-
-
-
                 if (down  && paddle <  PADDLE_MAX) paddle <= paddle+9'd2;
           else  if (up    && paddle >= PADDLE_MIN) paddle <= paddle-9'd2;
-
-
-
-
           ballX <= ballDirX ? ballX+9'd3 : ballX-9'd3;
           ballY <= ballDirY ? ballY+8'd3 : ballY-8'd3;
-
-
         end
       end
     end
   end
-
   assign hsync = ~((HRES+HF) <= h && h < (HRES+HF+HS));
   assign vsync = ~((VRES+VF) <= v && v < (VRES+VF+VS));
-
-
   assign speaker =
     (v[5] & hit) |
     (v[6] & (ballX>=((wallR_LIMIT>>1)-ballSize) | ballY<(wallL_LIMIT>>1) | ballY>=(wallB_LIMIT>>1)-ballSize));
-
-
-
-
   assign green = visible & (
     wallT | wallB | wallR |
     (inBallX & inBallY)
   );
-	
-
-
 	wire [4:0] v1 = v[4:0]-2;
 	wire [4:0] h1 = h[4:0]-2;
-	
   assign red = visible & (
     ((wallT | wallB | wallR) & (&v1[4:2] | &h1[4:2])) |
     (wallL & inPaddle)
   );
-
-
-
-
   reg [4:0] offset;
   wire [9:0] oh = h - offset[4:1];
   wire [9:0] ov = v - offset[4:1];
-
-
-
-
-
-
   assign blue = visible & ~green & ~red & (
-
-
     (^(oh[4:2] ^ ov[4:2])) & ((oh[4] ^ ov[4]) ? (oh[0] & ov[0]) : (oh[0] ^ ov[0]))
-
-
-
-
   );
-
-
-
 endmodule
