@@ -1,29 +1,5 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 `default_nettype none
 `timescale 1ns / 1ps
-
-
-
-
-
-
-
-
 module solo_squash #(
   parameter HRES        = 640,
   parameter HF          = 16,
@@ -41,19 +17,8 @@ module solo_squash #(
   inout vccd1,
   inout vssd1,
 `endif
-
   input clk,
-
-
-
-
   input reset,
-
-
-
-
-
-
 	input pause_n,
   input new_game_n,
   input down_key_n,
@@ -76,9 +41,6 @@ module solo_squash #(
   localparam wallR_LIMIT  = HRES -wallWidth;
   localparam wallT_LIMIT  =       wallWidth;
   localparam wallB_LIMIT  = VRES -wallWidth;
-
-
-
   reg [9:0]   h;
   reg [9:0]   v;
   reg         inPaddle;
