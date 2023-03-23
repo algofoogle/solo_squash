@@ -113,19 +113,12 @@ module solo_squash #(
   wire down     = ~down_key_n;
 
   always @(posedge clk) begin
-
-
-
-
     if (reset)
-
     begin
-      
       hit       <= 0;
       paddle    <= PADDLE_RESET;
       ballX     <= BALLX_RESET; 
       ballY     <= BALLY_RESET;
-      
       h         <= 0;
       v         <= 0;
       inPaddle  <= 0;
@@ -133,69 +126,27 @@ module solo_squash #(
       inBallY   <= 0;
       ballDirX  <= 1;
       ballDirY  <= 1;
-
-      
-      
       offset    <= 0;
-
     end else begin
-
       if (0==new_game_n) begin
-
-
-
-
         hit       <= 0;
         paddle    <= PADDLE_RESET;
         ballX     <= BALLX_RESET; 
         ballY     <= BALLY_RESET;
-
-
       end
-
-
       h <= hmax ? 10'b0 : h+1'b1;
-
-
       inBallX <= (inBallX ? h[9:1]!=ballX+ballSize : h[9:1]==ballX) & (ballX[8:3]<=6'b100101); //(ballX<=296);
-
-
-
       if (inBallX && inBallY & inPaddle && wallL) begin
-
         ballDirX <= 1;
-
-
-
-
-
         hit <= 1;
       end
-
       else if (inBallX && wallR) ballDirX <= 0;
-
-
             if (inBallY && wallB) ballDirY <= 0;
       else  if (inBallY && wallT) ballDirY <= 1;
-
-
-
-
-
       if (hmax) begin
-
         v <= vmax ? 10'b0 : v+1'b1;
-
-
         if (v[8:0]==paddle) begin
-
           inPaddle <= 1;
-
-
-
-
-
-
           hit <= 0;
         end
         else if (v==paddle+paddleSize) inPaddle <= 0;
