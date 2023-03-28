@@ -23,7 +23,11 @@
 
 module solo_squash_caravel_tb;
 
+    integer clock_count_1k = 0; // Used just to report how many clock ticks we've done.
     initial begin
+        // Show configured default state of GPIOs (based on verilog/rtl/user_defines.v).
+        // Note that these might not take effect unless your test runner (see Makefile)
+        // is actually explicitly including verilog/rtl/user_defines.v before other files.
         $display ("USER_CONFIG_GPIO_5_INIT  = %x (%b)", `USER_CONFIG_GPIO_5_INIT,  `USER_CONFIG_GPIO_5_INIT);
         $display ("USER_CONFIG_GPIO_6_INIT  = %x (%b)", `USER_CONFIG_GPIO_6_INIT,  `USER_CONFIG_GPIO_6_INIT);
         $display ("USER_CONFIG_GPIO_7_INIT  = %x (%b)", `USER_CONFIG_GPIO_7_INIT,  `USER_CONFIG_GPIO_7_INIT);
@@ -41,9 +45,24 @@ module solo_squash_caravel_tb;
         $display ("USER_CONFIG_GPIO_19_INIT = %x (%b)", `USER_CONFIG_GPIO_19_INIT, `USER_CONFIG_GPIO_19_INIT);
         $display ("USER_CONFIG_GPIO_20_INIT = %x (%b)", `USER_CONFIG_GPIO_20_INIT, `USER_CONFIG_GPIO_20_INIT);
         $display ("USER_CONFIG_GPIO_21_INIT = %x (%b)", `USER_CONFIG_GPIO_21_INIT, `USER_CONFIG_GPIO_21_INIT);
+        
+        // Dump running state of all signals to solo_squash_caravel.vcd:
         $dumpfile ("solo_squash_caravel.vcd");
         $dumpvars (0, solo_squash_caravel_tb);
-        #1; // Why is this needed?
+
+        // Monitor for a large number of clock cycles while the tests run in parallel,
+        // reporting for each 1,000 that occur to show progress.
+        //NOTE: cocotb tests should do the equivalent of a $finish before this loop
+        // finishes. If not, we'll get the error seen below the loop.
+        repeat (1000) begin // 1000 batches...
+            repeat (1000) @(posedge clk); // ...of 1000 cycles.
+            ++clock_count_1k;
+            $display("%dk clock cycles", clock_count_1k);
+        end
+        $display("%c[0;31m",27); // ANSI escape for red text.
+        $display("solo_squash_caravel_tb: The main test monitor loop finished before the actual tests did.");
+        $display("solo_squash_caravel_tb: Increase the monitor loop cycles, or check the tests are actually working.");
+        $display("%c[0m",27); // ANSI escape for default text.
     end
 
     // These connect up with uut:

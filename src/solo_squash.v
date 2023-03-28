@@ -19,10 +19,9 @@
 
 `define BG_PRETTY
 `define BG_ANIMATED
-//NOTE: Ideally RESET_AL and CARAVEL_IO_OEB are defined, when needed,
-// via the build process:
-// `define RESET_AL        // If defined, reset is active low.
-// `define CARAVEL_IO_OEB  // Drive some of Caravel's io_oeb lines.
+//NOTE: Ideally RESET_AL and CARAVEL_IO_OEB are defined only when needed, and specifically via the build process:
+// `define RESET_AL        // If defined, reset is active low. I'll probably only use this for CPLD/FPGA implementations, not ASIC.
+// `define CARAVEL_IO_OEB  // Drive some of Caravel's io_oeb lines. //NOTE: Probably won't be used anymore; handled by solo_squash_caravel adapter instead.
 
 module solo_squash #(
   parameter HRES        = 640,
@@ -54,7 +53,7 @@ module solo_squash #(
   output oeb[5:0],    // These map to io_oeb[17:12].
 `endif
 
-	input pause_n,
+  input pause_n,
   input new_game_n,   // Just does a minimal play state reset.
   input down_key_n,
   input up_key_n,
@@ -77,7 +76,7 @@ module solo_squash #(
   localparam wallT_LIMIT  =       wallWidth;
   localparam wallB_LIMIT  = VRES -wallWidth;
 
-`ifdef CARAVEL_IO_OEB
+`ifdef CARAVEL_IO_OEB //NOTE: Probably won't be used anymore; handled by solo_squash_caravel adapter instead.
 `ifdef RESET_AL
   assign oeb = {6{~reset}}; // AL Reset; when low, oeb must be high (to disable output).
 `else //RESET_AL

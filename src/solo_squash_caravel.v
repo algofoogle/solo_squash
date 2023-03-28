@@ -32,8 +32,9 @@
 `default_nettype none
 `timescale 1ns / 1ps
 
-//NOTE: This would typically be instantiated with the name `mprj`
-// inside user_project_wrapper.v (UPW)
+//NOTE: This would typically be instantiated to replace `mprj`
+// inside user_project_wrapper.v (UPW), but would be given the
+// name `adapter`.
 module solo_squash_caravel (
 `ifdef USE_POWER_PINS
     inout vccd1,      // User area 1 1.8V supply
