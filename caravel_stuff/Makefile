@@ -76,5 +76,7 @@ coco_test: solo_squash_caravel.hex
 	! grep failure results.xml
 #NOTE: You could drop TESTCASE env, in which case all tagged tests will run in order.
 
+	mv solo_squash_caravel.vcd $(SIM)-solo_squash_caravel.vcd
+
 show_results:
-	gtkwave solo_squash_caravel.vcd solo_squash3.gtkw
+	gtkwave $(SIM)-solo_squash_caravel.vcd solo_squash3.gtkw
