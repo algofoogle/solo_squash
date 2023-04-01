@@ -122,7 +122,7 @@ async def test_start(dut):
     await external_reset_cycle(dut)
     # At this point, the design is at its initial post-reset state,
     # so other tests are good to go.
-    assert dut.gpio_ready.value == 0 # This was only _pulsed_ so it should now be 0.
+    assert dut.gpio_ready.value == 0 # This was only _pulsed_ (above) so it should now be 0.
     assert dut.design_reset.value == 0 # Design should not be in reset now.
     # Typical outputs should all be asserted 0 or 1:
     assert known_driven(dut.hsync)

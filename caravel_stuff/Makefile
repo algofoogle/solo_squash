@@ -23,6 +23,8 @@
 PWDD := $(shell pwd)
 BLOCKS := $(shell basename $(PWDD))
 
+UNIT_DELAY ?= 1
+
 # ---- Include Partitioned Makefiles ----
 
 CONFIG = caravel_user_project
@@ -33,29 +35,38 @@ export PYTHONPATH := $(DESIGNS)/verilog/rtl/solo_squash/test
 export LIBPYTHON_LOC=$(shell cocotb-config --libpython)
 export COCOTB_REDUCED_LOG_FMT=1
 
+# File(s) to preserve if make fails or is otherwise aborted:
+.PRECIOUS: solo_squash_caravel.vcd
+
 # Standard Caravel test environment stuff:
 include $(MCW_ROOT)/verilog/dv/make/env.makefile
 include $(MCW_ROOT)/verilog/dv/make/var.makefile
 include $(MCW_ROOT)/verilog/dv/make/cpu.makefile
 include $(MCW_ROOT)/verilog/dv/make/sim.makefile
 
-# Our cocotb tests:
+# Our standard cocotb RTL tests:
 coco_test: solo_squash_caravel.hex
 	rm -rf sim_build/
 	mkdir sim_build/
 
-	iverilog -Ttyp -DFUNCTIONAL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
+# Build iverilog-based testbench runner:
+	echo "Using UNIT_DELAY=#$(UNIT_DELAY)"
+	time iverilog -Ttyp -DFUNCTIONAL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#$(UNIT_DELAY) \
 	-f$(VERILOG_PATH)/includes/includes.rtl.caravel \
 	-f$(USER_PROJECT_VERILOG)/includes/includes.rtl.$(CONFIG) \
 	-o sim_build/sim.vvp \
 	solo_squash_caravel_tb.v
 
-	MODULE=test_solo_squash_caravel \
-	vvp -M $$(cocotb-config --prefix)/cocotb/libs -m libcocotbvpi_icarus sim_build/sim.vvp
+# Run test: external reset
+	TESTCASE=test_start,test_external_reset MODULE=test_solo_squash_caravel \
+	time vvp -M $$(cocotb-config --prefix)/cocotb/libs -m libcocotbvpi_icarus sim_build/sim.vvp
 	! grep failure results.xml
-#NOTE: Besides MODULE, test can also be prefixed with a comma-separated
-# list of specific tests to be run in order, like this:
-# TESTCASE=test_start,test_frame0
+
+# Run test: generate first full frame
+	TESTCASE=test_start,test_frame0 MODULE=test_solo_squash_caravel \
+	time vvp -M $$(cocotb-config --prefix)/cocotb/libs -m libcocotbvpi_icarus sim_build/sim.vvp
+	! grep failure results.xml
+#NOTE: You could drop TESTCASE env, in which case all tagged tests will run in order.
 
 show_results:
 	gtkwave solo_squash_caravel.vcd solo_squash3.gtkw

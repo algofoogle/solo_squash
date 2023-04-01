@@ -63,6 +63,7 @@ module solo_squash_caravel_tb;
         $display("solo_squash_caravel_tb: The main test monitor loop finished before the actual tests did.");
         $display("solo_squash_caravel_tb: Increase the monitor loop cycles, or check the tests are actually working.");
         $display("%c[0m",27); // ANSI escape for default text.
+        $finish;
     end
 
     // These connect up with uut:

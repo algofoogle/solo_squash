@@ -43,6 +43,24 @@ base design in my [`solo_squash` repo](https://github.com/algofoogle/solo_squash
 
 This repo, the project itself, and all related files are licensed with [Apache 2](LICENSE).
 
+## Cloning this repo
+
+This code uses at least one git submodule, so to clone it make sure you do:
+```bash
+git clone --recursive https://github.com/algofoogle/solo-squash-caravel
+```
+
+...which will make sure [`solo_squash`](https://github.com/algofoogle/solo_squash)
+is also pulled in at `verilog/rtl`.
+
+If you feel you need to, you could also *update* submodules to their latest commits
+by doing:
+```bash
+git pull --recurse-submodules
+```
+...but the chosen commit as specified by *this* `solo-squash-caravel` repo is
+the one that was last successfully used, so you probably don't want to change that.
+
 ## Details
 
 This is intended to drive a VGA display at 640x480 resolution, ~60Hz,
