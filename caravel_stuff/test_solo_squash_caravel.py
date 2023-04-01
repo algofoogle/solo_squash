@@ -81,6 +81,7 @@ def z(signal):
 async def test_start(dut):
     # Init and start the main Caravel clock at 25MHz:
     clock = init_design_clock(dut)
+    print("--- TEST DEBUG: Clock started")
 
     # Assert Caravel reset (RSTB):
     dut.RSTB.value = 0
@@ -97,21 +98,25 @@ async def test_start(dut):
     # dut.down_key_n.value    = Logic('z')
     # dut.new_game_n.value    = Logic('z')
     # dut.pause_n.value       = Logic('z')
+    print("--- TEST DEBUG: Initial state set")
 
     # Bring up each of the power rails gradually, 8 clocks (320ns) apart:
     await ClockCycles(dut.clk, 8);      dut.power1.value = 1
     await ClockCycles(dut.clk, 8);      dut.power2.value = 1
     await ClockCycles(dut.clk, 8);      dut.power3.value = 1
     await ClockCycles(dut.clk, 8);      dut.power4.value = 1
+    print("--- TEST DEBUG: Power bringup complete")
 
     # Wait another 80 clock cycles and then release reset
     # (3.2us; does it need to be this much? Maybe this reflects a real RC reset delay)
     await ClockCycles(dut.clk, 80);     dut.RSTB.value = 1
+    print("--- TEST DEBUG: Reset released")
 
     # Wait for GPIOs to become active
     # (when our firmware signals it via loopback from pulse on LA[32]):
     await RisingEdge(dut.gpio_ready)
     await FallingEdge(dut.gpio_ready)
+    print("--- TEST DEBUG: GPIOs are ready")
 
     # Wait 20 clock cycles (arbitrary);
     # let design run freely before we'll reset it.
@@ -119,7 +124,9 @@ async def test_start(dut):
 
     # Assert our external reset for 10 clock cycles,
     # so we will then make it to a known state for remaining tests:
+    print("--- TEST DEBUG: Resetting main design...")
     await external_reset_cycle(dut)
+    print("--- TEST DEBUG: ...main reset done")
     # At this point, the design is at its initial post-reset state,
     # so other tests are good to go.
     assert dut.gpio_ready.value == 0 # This was only _pulsed_ (above) so it should now be 0.
@@ -133,6 +140,8 @@ async def test_start(dut):
     assert known_driven(dut.speaker)
     # Await 1 full clock, to balance out settle_step from external_reset_cycle:
     await ClockCycles(dut.clk, 1)
+    print("--- TEST DEBUG: Ready for other tests")
+
 
 
 ##############################################################################
@@ -147,9 +156,11 @@ async def test_external_reset(dut):
     # of each of these tests or the clock will otherwise just be stalled
     # and the test will just keep VCD-logging that stalled state endlessly.
     clock = init_design_clock(dut)
+    print("--- TEST DEBUG: Clock started in test_external_reset")
 
     # Await 50 clocks, then prove there is still meaningful output:
     await ClockCycles(dut.clk, 50)
+    print("--- TEST DEBUG: 50 clocks elapsed")
     assert dut.gpio_ready.value == 0 # This was only _pulsed_ so it should now be 0.
     assert dut.design_reset.value == 0 # Design should not be in reset now.
     # Typical outputs should all be asserted 0 or 1:
@@ -159,6 +170,7 @@ async def test_external_reset(dut):
     assert known_driven(dut.green)
     assert known_driven(dut.blue)
     assert known_driven(dut.speaker)
+    print("--- TEST DEBUG: Outputs OK")
 
     # Now assert external reset:
     dut.ext_reset_n.value = 0
@@ -178,11 +190,13 @@ async def test_external_reset(dut):
     assert dut.design_reset.value == 1
     # Make sure gpio_ready is NOT disabled, and remains outputting 0:
     assert dut.gpio_ready == 0
+    print("--- TEST DEBUG: Reset activated; outputs OK")
 
     # Keep reset asserted for 10 clocks, then release and check again:
     await ClockCycles(dut.clk, 10)
     dut.ext_reset_n.value = 1 # Release external reset.
     await settle_step(dut)
+    print("--- TEST DEBUG: Reset released")
     assert known_driven(dut.hsync)
     assert known_driven(dut.vsync)
     assert known_driven(dut.red)
@@ -191,6 +205,7 @@ async def test_external_reset(dut):
     assert known_driven(dut.speaker)
     assert dut.design_reset.value == 0
     assert dut.gpio_ready == 0
+    print("--- TEST DEBUG: Outputs OK")
     # Clock sync:
     await ClockCycles(dut.clk, 1)
 
@@ -204,10 +219,13 @@ async def test_external_reset(dut):
 @cocotb.test()
 async def test_frame0(dut):
     clock = init_design_clock(dut)
+    print("--- TEST DEBUG: Clock started in test_frame0")
 
     await external_reset_cycle(dut)
+    print("--- TEST DEBUG: Reset completed. Rendering first frame...")
 
     # Now we should be able to await 420,001 clock cycles and prove
     # that a full frame (plus 1 clock) completes:
     await ClockCycles(dut.clk, 420_001)
+    print("--- TEST DEBUG: First frame completed")
 

@@ -19,11 +19,18 @@
 ### and its purpose is to run tests of our design, within Caravel,
 ### via cocotb.
 
+# Note the following things that are used below:
+# *	-f$(VERILOG_PATH)/includes/includes.rtl.caravel
+#	This is typically caravel_user_project/mgmt_core_wrapper/verilog/includes/includes.rtl.caravel
+#	and is the main list of caravel components (heaps of them).
+# * make coco_test
+#	Runs RTL tests using cocotb and iverilog.
  
 PWDD := $(shell pwd)
 BLOCKS := $(shell basename $(PWDD))
 
 UNIT_DELAY ?= 1
+SIM ?= rtl
 
 # ---- Include Partitioned Makefiles ----
 
@@ -44,16 +51,17 @@ include $(MCW_ROOT)/verilog/dv/make/var.makefile
 include $(MCW_ROOT)/verilog/dv/make/cpu.makefile
 include $(MCW_ROOT)/verilog/dv/make/sim.makefile
 
-# Our standard cocotb RTL tests:
+# Our standard cocotb tests (either RTL or GL depending on $SIM):
 coco_test: solo_squash_caravel.hex
 	rm -rf sim_build/
 	mkdir sim_build/
 
 # Build iverilog-based testbench runner:
 	echo "Using UNIT_DELAY=#$(UNIT_DELAY)"
+	echo "SIM=$(SIM)"
 	time iverilog -Ttyp -DFUNCTIONAL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#$(UNIT_DELAY) \
 	-f$(VERILOG_PATH)/includes/includes.rtl.caravel \
-	-f$(USER_PROJECT_VERILOG)/includes/includes.rtl.$(CONFIG) \
+	-f$(USER_PROJECT_VERILOG)/includes/includes.$(SIM).$(CONFIG) \
 	-o sim_build/sim.vvp \
 	solo_squash_caravel_tb.v
 
