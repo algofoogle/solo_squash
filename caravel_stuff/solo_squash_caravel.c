@@ -23,8 +23,8 @@
     Solo Squash init firmware:
     -   Configures MPRJ IO[12:8] as inputs.
     -   Configures MPRJ IO[20:13] as outputs.
-    -   Pulses LA[32] when GPIO config is finished. This is seen via GPIO[20].
     -   If PROJECT_ID is defined: Activates our design as part of a wrapped group submission.
+    -   Pulses LA[32] when GPIO config is finished. This is seen via GPIO[20].
 */
 
 // PROJECT_ID of our design if used as part of a Zero to ASIC group submission.
@@ -86,6 +86,13 @@ void main()
     // compared with all the other code above which has to be executed in place (XIP)
     // from relatively slow Flash SPI serial reads.
 
+#ifdef PROJECT_ID // For wrapped group submissions in Zero to ASIC course.
+    // activate the project with 1st bank of the LA
+    reg_la0_iena = 0;           // Active high; 0 means "disable" input.
+    reg_la0_oenb = 0xffffffff;  // Active high (see above); enable all outputs in bank 0 of LA.
+    reg_la0_data = 1 << PROJECT_ID; // Activate: Assert LA bit corresponding to our project's "active" line.
+#endif
+
     // Pulse la_data_in[32] (LSB of 2nd bank of LA) to show that GPIOs are now active:
     reg_la1_iena = 0;           // Active high; 0 means "disable" input.
     reg_la1_oenb = 0xffffffff;	// Active high (despite 'b' normally meaning AL); 1 means "enable" output.
@@ -95,13 +102,6 @@ void main()
     reg_la1_data = 0;           // ...and low again.
     //NOTE: This goes back out via GPIO[20], and can be used both for physical testing/debugging,
     // and also for our tests to sync.
-
-#ifdef PROJECT_ID // For wrapped group submissions in Zero to ASIC course.
-    // activate the project with 1st bank of the LA
-    reg_la0_iena = 0;           // Active high; 0 means "disable" input.
-    reg_la0_oenb = 0xffffffff;  // Active high (see above); enable all outputs in bank 0 of LA.
-    reg_la0_data = 1 << PROJECT_ID; // Activate: Assert LA bit corresponding to our project's "active" line.
-#endif
 
     // This CPU will now hang, while the actual ASIC design is free-running.
 }
