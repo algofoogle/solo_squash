@@ -86,18 +86,16 @@ async def test_start(dut):
     # Assert Caravel reset (RSTB):
     dut.RSTB.value = 0
     # For now, make sure our external reset is NOT asserted:
-    dut.ext_reset_n.value = 1
+    dut.ext_reset_n.value   = 1
+    dut.up_key_n.value      = 1 # Logic('z')
+    dut.down_key_n.value    = 1 # Logic('z')
+    dut.new_game_n.value    = 1 # Logic('z')
+    dut.pause_n.value       = 1 # Logic('z')
     # Start with all power rails off:
     dut.power1.value = 0
     dut.power2.value = 0
     dut.power3.value = 0
     dut.power4.value = 0
-    # Leave our key GPIO inputs disconnected for now:
-    #NOTE: Don't need to assign these because I think cocotb defaults to 'z' if not otherwise assigned:
-    # dut.up_key_n.value      = Logic('z')
-    # dut.down_key_n.value    = Logic('z')
-    # dut.new_game_n.value    = Logic('z')
-    # dut.pause_n.value       = Logic('z')
     print("--- TEST DEBUG: Initial state set")
 
     # Bring up each of the power rails gradually, 8 clocks (320ns) apart:
@@ -110,17 +108,22 @@ async def test_start(dut):
     # Wait another 80 clock cycles and then release reset
     # (3.2us; does it need to be this much? Maybe this reflects a real RC reset delay)
     await ClockCycles(dut.clk, 80);     dut.RSTB.value = 1
-    print("--- TEST DEBUG: Reset released")
+    print("--- TEST DEBUG: Reset released 1")
+
+    # Wait 500 clock cycles, then assert reset again:
+    await ClockCycles(dut.clk, 500);      dut.RSTB.value = 1
+    # Release reset after another 500 clock cycles:
+    await ClockCycles(dut.clk, 500);      dut.RSTB.value = 0
 
     # Wait for GPIOs to become active
     # (when our firmware signals it via loopback from pulse on LA[32]):
-    await RisingEdge(dut.gpio_ready)
-    await FallingEdge(dut.gpio_ready)
+    await with_timeout(RisingEdge(dut.gpio_ready), 1000, 'us')
+    await with_timeout(FallingEdge(dut.gpio_ready), 200, 'us')
     print("--- TEST DEBUG: GPIOs are ready")
 
-    # Wait 20 clock cycles (arbitrary);
+    # Wait 100 clock cycles (arbitrary);
     # let design run freely before we'll reset it.
-    await ClockCycles(dut.clk, 20)
+    await ClockCycles(dut.clk, 100)
 
     # Assert our external reset for 10 clock cycles,
     # so we will then make it to a known state for remaining tests:

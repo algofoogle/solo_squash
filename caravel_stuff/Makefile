@@ -60,7 +60,7 @@ coco_test: solo_squash_caravel.hex
 	echo "Using UNIT_DELAY=#$(UNIT_DELAY)"
 	echo "SIM=$(SIM)"
 	time iverilog -Ttyp -DFUNCTIONAL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#$(UNIT_DELAY) \
-	-f$(VERILOG_PATH)/includes/includes.rtl.caravel \
+	-f$(VERILOG_PATH)/includes/includes.$(SIM).caravel \
 	-f$(USER_PROJECT_VERILOG)/includes/includes.$(SIM).$(CONFIG) \
 	-o sim_build/sim.vvp \
 	solo_squash_caravel_tb.v
