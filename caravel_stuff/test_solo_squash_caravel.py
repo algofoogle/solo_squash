@@ -118,9 +118,10 @@ async def test_start(dut):
     print("--- TEST DEBUG: Reset 2 released")
 
     # Wait for GPIOs to become active
-    # (when our firmware signals it via loopback from pulse on LA[32]):
+    # (when our firmware signals it via loopback from pulse on LA[32],
+    # or loopback by "active" going high in a wrapped group submission):
     await with_timeout(RisingEdge(dut.gpio_ready), 1000, 'us')
-    await with_timeout(FallingEdge(dut.gpio_ready), 200, 'us')
+    # await with_timeout(FallingEdge(dut.gpio_ready), 200, 'us')
     print("--- TEST DEBUG: GPIOs are ready")
 
     # Wait 100 clock cycles (arbitrary);

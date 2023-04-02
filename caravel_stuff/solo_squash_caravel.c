@@ -24,7 +24,10 @@
     -   Configures MPRJ IO[12:8] as inputs.
     -   Configures MPRJ IO[20:13] as outputs.
     -   If PROJECT_ID is defined: Activates our design as part of a wrapped group submission.
-    -   Pulses LA[32] when GPIO config is finished. This is seen via GPIO[20].
+        -   In a wrapped group submission, the "active" line sticks high on GPIO[20].
+    -   Pulses LA[32] when GPIO config is finished.
+        -   This goes nowhere in a wrapped group submission.
+        -   Otherwise, this is seen via GPIO[20].
 */
 
 // PROJECT_ID of our design if used as part of a Zero to ASIC group submission.
