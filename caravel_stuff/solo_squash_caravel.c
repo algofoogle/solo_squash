@@ -24,7 +24,15 @@
     -   Configures MPRJ IO[12:8] as inputs.
     -   Configures MPRJ IO[20:13] as outputs.
     -   Pulses LA[32] when GPIO config is finished. This is seen via GPIO[20].
+    -   If PROJECT_ID is defined: Activates our design as part of a wrapped group submission.
 */
+
+// PROJECT_ID of our design if used as part of a Zero to ASIC group submission.
+//SMELL: PROJECT_ID (1 to 31?) is assigned by Matt Venn for group submissions,
+// but should probably be defined externally to this file (e.g. defined by
+// the compilation step) so that this file can remain generic and used in
+// other applications without being hardcoded for the wrapped_solo_caravel.
+#define PROJECT_ID 1
 
 // #define INPUT_MODE  0x0c02 // The OLD value for PULLUP, no longer considered valid?
 // #define INPUT_MODE  GPIO_MODE_USER_STD_INPUT_PULLUP //SMELL: Caravel PULLUP/DOWN might be broken; avoid for now.
@@ -87,6 +95,13 @@ void main()
     reg_la1_data = 0;           // ...and low again.
     //NOTE: This goes back out via GPIO[20], and can be used both for physical testing/debugging,
     // and also for our tests to sync.
+
+#ifdef PROJECT_ID // For wrapped group submissions in Zero to ASIC course.
+    // activate the project with 1st bank of the LA
+    reg_la0_iena = 0;           // Active high; 0 means "disable" input.
+    reg_la0_oenb = 0xffffffff;  // Active high (see above); enable all outputs in bank 0 of LA.
+    reg_la0_data = 1 << PROJECT_ID; // Activate: Assert LA bit corresponding to our project's "active" line.
+#endif
 
     // This CPU will now hang, while the actual ASIC design is free-running.
 }
