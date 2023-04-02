@@ -32,6 +32,12 @@ BLOCKS := $(shell basename $(PWDD))
 UNIT_DELAY ?= 1
 SIM ?= rtl
 
+ifeq ($(SIM),gl)
+	DGL=-DGL
+else
+	DGL=
+endif
+
 # ---- Include Partitioned Makefiles ----
 
 CONFIG = caravel_user_project
@@ -59,7 +65,7 @@ coco_test: solo_squash_caravel.hex
 # Build iverilog-based testbench runner:
 	echo "Using UNIT_DELAY=#$(UNIT_DELAY)"
 	echo "SIM=$(SIM)"
-	time iverilog -Ttyp -DFUNCTIONAL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#$(UNIT_DELAY) \
+	time iverilog -Ttyp -DFUNCTIONAL $(DGL) -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#$(UNIT_DELAY) \
 	-f$(VERILOG_PATH)/includes/includes.$(SIM).caravel \
 	-f$(USER_PROJECT_VERILOG)/includes/includes.$(SIM).$(CONFIG) \
 	-o sim_build/sim.vvp \
@@ -75,8 +81,6 @@ coco_test: solo_squash_caravel.hex
 	time vvp -M $$(cocotb-config --prefix)/cocotb/libs -m libcocotbvpi_icarus sim_build/sim.vvp
 	! grep failure results.xml
 #NOTE: You could drop TESTCASE env, in which case all tagged tests will run in order.
-
-	mv solo_squash_caravel.vcd $(SIM)-solo_squash_caravel.vcd
 
 show_results:
 	gtkwave $(SIM)-solo_squash_caravel.vcd solo_squash3.gtkw

@@ -46,9 +46,21 @@ module solo_squash_caravel_tb;
         $display ("USER_CONFIG_GPIO_20_INIT = %x (%b)", `USER_CONFIG_GPIO_20_INIT, `USER_CONFIG_GPIO_20_INIT);
         $display ("USER_CONFIG_GPIO_21_INIT = %x (%b)", `USER_CONFIG_GPIO_21_INIT, `USER_CONFIG_GPIO_21_INIT);
         
-        // Dump running state of all signals to solo_squash_caravel.vcd:
-        $dumpfile ("solo_squash_caravel.vcd");
+        // Dump running state of all signals to $(SIM)-solo_squash_caravel.vcd:
+`ifdef GL
+        $dumpfile ("gl-solo_squash_caravel.vcd");
+        $dumpvars (1, solo_squash_caravel_tb);
+        $dumpvars (1, solo_squash_caravel_tb.spiflash);
+        $dumpvars (1, solo_squash_caravel_tb.uut);
+        $dumpvars (0, solo_squash_caravel_tb.uut.mprj);
+        $dumpvars (0, solo_squash_caravel_tb.uut.housekeeping);
+        $dumpvars (0, solo_squash_caravel_tb.uut.padframe);
+        $dumpvars (0, solo_squash_caravel_tb.uut.clock_ctrl);
+`else
+        $dumpfile ("rtl-solo_squash_caravel.vcd");
         $dumpvars (0, solo_squash_caravel_tb);
+`endif
+
 
         // Monitor for a large number of clock cycles while the tests run in parallel,
         // reporting for each 1,000 that occur to show progress.
@@ -81,8 +93,8 @@ module solo_squash_caravel_tb;
     // Caravel power lines:
     wire VDD3V3         = power1;
     wire VDD1V8         = power2;
-    wire USER_VDD3V3    = power3;
-    wire USER_VDD1V8    = power4;
+    wire USER_VDD3V3    = power3;   // Unused now?
+    wire USER_VDD1V8    = power4;   // Unused now?
     wire VSS = 1'b0;
     //NOTE: Power lines are a little different in MPW8+ ??
     // See: https://github.com/efabless/caravel_user_project/blob/bc4ccfec4b35d19220740f143ff1798fdfa4f0eb/verilog/dv/io_ports/io_ports_tb.v#L218-L244
@@ -118,17 +130,21 @@ module solo_squash_caravel_tb;
 
     caravel uut (
         .vddio    (VDD3V3),
+        .vddio_2  (VDD3V3),
         .vssio    (VSS),
+        .vssio_2  (VSS),
         .vdda     (VDD3V3),
         .vssa     (VSS),
         .vccd     (VDD1V8),
         .vssd     (VSS),
-        .vdda1    (USER_VDD3V3),
-        .vdda2    (USER_VDD3V3),
+        .vdda1    (VDD3V3),
+        .vdda1_2  (VDD3V3),
+        .vdda2    (VDD3V3),
         .vssa1    (VSS),
+        .vssa1_2  (VSS),
         .vssa2    (VSS),
-        .vccd1    (USER_VDD1V8),
-        .vccd2    (USER_VDD1V8),
+        .vccd1    (VDD1V8),
+        .vccd2    (VDD1V8),
         .vssd1    (VSS),
         .vssd2    (VSS),
         .clock    (clk),

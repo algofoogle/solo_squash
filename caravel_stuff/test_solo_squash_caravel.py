@@ -29,7 +29,7 @@
 import cocotb
 import os
 from cocotb.clock import Clock
-from cocotb.triggers import RisingEdge, FallingEdge, ClockCycles, Timer
+from cocotb.triggers import RisingEdge, FallingEdge, ClockCycles, Timer, with_timeout
 from cocotb.types import Logic
 
 
@@ -108,12 +108,14 @@ async def test_start(dut):
     # Wait another 80 clock cycles and then release reset
     # (3.2us; does it need to be this much? Maybe this reflects a real RC reset delay)
     await ClockCycles(dut.clk, 80);     dut.RSTB.value = 1
-    print("--- TEST DEBUG: Reset released 1")
+    print("--- TEST DEBUG: Reset 1 released")
 
     # Wait 500 clock cycles, then assert reset again:
-    await ClockCycles(dut.clk, 500);      dut.RSTB.value = 1
-    # Release reset after another 500 clock cycles:
     await ClockCycles(dut.clk, 500);      dut.RSTB.value = 0
+    print("--- TEST DEBUG: Reset 2 asserted")
+    # Release reset after another 500 clock cycles:
+    await ClockCycles(dut.clk, 500);      dut.RSTB.value = 1
+    print("--- TEST DEBUG: Reset 2 released")
 
     # Wait for GPIOs to become active
     # (when our firmware signals it via loopback from pulse on LA[32]):
