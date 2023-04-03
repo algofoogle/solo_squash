@@ -24,10 +24,7 @@
     -   Configures MPRJ IO[12:8] as inputs.
     -   Configures MPRJ IO[20:13] as outputs.
     -   If PROJECT_ID is defined: Activates our design as part of a wrapped group submission.
-        -   In a wrapped group submission, the "active" line sticks high on GPIO[20].
-    -   Pulses LA[32] when GPIO config is finished.
-        -   This goes nowhere in a wrapped group submission.
-        -   Otherwise, this is seen via GPIO[20].
+    -   Pulses LA[32] when GPIO config is finished. This is seen via GPIO[20].
 */
 
 // PROJECT_ID of our design if used as part of a Zero to ASIC group submission.
@@ -59,6 +56,9 @@ void main()
 
     */
 
+    reg_mprj_datal = 0;
+    reg_mprj_datah = 0;
+
     // Configure MPRJ IO[12:8] as inputs (optionally with pullups; see INPUT_MODE define above):
     // See also: reg_gpio_pu:
     // https://caravel-docs.readthedocs.io/en/wavedrom-regs/gpio.html
@@ -79,7 +79,11 @@ void main()
     reg_mprj_io_18  = GPIO_MODE_USER_STD_OUTPUT;        // speaker
     // These are also outputs, but just for testing:
     reg_mprj_io_19  = GPIO_MODE_USER_STD_OUTPUT;        // design_reset
-    reg_mprj_io_20  = GPIO_MODE_USER_STD_OUTPUT;        // gpio_ready
+#ifdef PROJECT_ID
+    reg_mprj_io_20  = GPIO_MODE_MGMT_STD_OUTPUT;        // gpio_ready driven by firmware.
+#else
+    reg_mprj_io_20  = GPIO_MODE_USER_STD_OUTPUT;        // gpio_ready driven by LA1[0] feedback.
+#endif
 
     // Kick off the very long bit shift process into the GPIO control registers...
     reg_mprj_xfer = 1;
@@ -94,18 +98,23 @@ void main()
     reg_la0_iena = 0;           // Active high; 0 means "disable" input.
     reg_la0_oenb = 0xffffffff;  // Active high (see above); enable all outputs in bank 0 of LA.
     reg_la0_data = 1 << PROJECT_ID; // Activate: Assert LA bit corresponding to our project's "active" line.
-#endif
 
-    // Pulse la_data_in[32] (LSB of 2nd bank of LA) to show that GPIOs are now active:
+    // Pulse IO[20] to show that we're finishing running the firmware.
+    // We do this directly by SoC control over IO[20], because we want to avoid
+    // needing all of LA1 (96 signals, all told) when we're doing a wrapped group submission.
+    reg_mprj_datal = 1 << 20;   // Turn on IO[20].
+    reg_mprj_datal = 0;         // Turn off IO[20].
+#else
+    // Pulse la_data_in[32] (LSB of 2nd bank of LA) to show that GPIOs are now active;
+    // this feeds back out IO[20], and can be used both for physical testing/debugging,
+    // and also for our tests to sync.
     reg_la1_iena = 0;           // Active high; 0 means "disable" input.
     reg_la1_oenb = 0xffffffff;	// Active high (despite 'b' normally meaning AL); 1 means "enable" output.
                                 // This was changed in the era of Litex/VexRiscv, I think, but the name was retained.
                                 // NOTE: Could I just set this to 1 since I'm actually just using the LSB?
     reg_la1_data = 1;           // Bit 0 goes high...
     reg_la1_data = 0;           // ...and low again.
-    //NOTE: This goes back out via GPIO[20], and can be used both for physical testing/debugging,
-    // and also for our tests to sync.
+#endif
 
     // This CPU will now hang, while the actual ASIC design is free-running.
 }
-

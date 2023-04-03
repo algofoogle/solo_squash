@@ -118,10 +118,9 @@ async def test_start(dut):
     print("--- TEST DEBUG: Reset 2 released")
 
     # Wait for GPIOs to become active
-    # (when our firmware signals it via loopback from pulse on LA[32],
-    # or loopback by "active" going high in a wrapped group submission):
+    # (when our firmware signals it via loopback from pulse on LA[32]):
     await with_timeout(RisingEdge(dut.gpio_ready), 1000, 'us')
-    # await with_timeout(FallingEdge(dut.gpio_ready), 200, 'us')
+    await with_timeout(FallingEdge(dut.gpio_ready), 200, 'us')
     print("--- TEST DEBUG: GPIOs are ready")
 
     # Wait 100 clock cycles (arbitrary);
@@ -168,6 +167,7 @@ async def test_external_reset(dut):
     await ClockCycles(dut.clk, 50)
     print("--- TEST DEBUG: 50 clocks elapsed")
     assert dut.gpio_ready.value == 0 # This was only _pulsed_ so it should now be 0.
+    #assert known_driven(dut.gpio_ready)
     assert dut.design_reset.value == 0 # Design should not be in reset now.
     # Typical outputs should all be asserted 0 or 1:
     assert known_driven(dut.hsync)
@@ -196,6 +196,7 @@ async def test_external_reset(dut):
     assert dut.design_reset.value == 1
     # Make sure gpio_ready is NOT disabled, and remains outputting 0:
     assert dut.gpio_ready == 0
+    # assert known_driven(dut.gpio_ready)
     print("--- TEST DEBUG: Reset activated; outputs OK")
 
     # Keep reset asserted for 10 clocks, then release and check again:
@@ -211,6 +212,7 @@ async def test_external_reset(dut):
     assert known_driven(dut.speaker)
     assert dut.design_reset.value == 0
     assert dut.gpio_ready == 0
+    #assert known_driven(dut.gpio_ready)
     print("--- TEST DEBUG: Outputs OK")
     # Clock sync:
     await ClockCycles(dut.clk, 1)
