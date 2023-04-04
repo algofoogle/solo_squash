@@ -54,6 +54,7 @@ mkdir -p $SS
 cp -v Makefile $SS/ && ok || bad
 cp -v solo_squash* $SS/ && ok || bad
 cp -v test_solo_squash_caravel.py $SS/ && ok || bad
+cp -v wrapped_project_id.h $SS/ && ok || bad
 # Make sure .gitignore exists and contains an EXCEPTION to permit *.gtkw
 fgrep '!*.gtkw' $SS/.gitignore 2>/dev/null || echo '!*.gtkw' >> $SS/.gitignore
 

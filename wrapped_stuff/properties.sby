@@ -1,0 +1,15 @@
+[options]
+mode prove
+
+[engines]
+smtbmc
+
+[script]
+read -formal wrapper.v solo_squash.v solo_squash_caravel.v
+prep -top wrapped_solo_squash
+
+[files]
+wrapper.v
+properties.v
+solo_squash/src/solo_squash.v
+solo_squash/src/solo_squash_caravel.v

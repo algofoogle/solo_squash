@@ -35,4 +35,5 @@ The contents of this folder include:
 *   `UPW-config.json`: Would normally be called `caravel_user_project/openlane/user_project_wrapper/config.json` and instantiates our design's GDS inside the Caravel harness.
 *   `user_defines.v`: Copy of `caravel_user_project/rtl/user_defines.v`, specifying the power-on state of GPIOs even before the SoC firmware configures GPIOs.
 *   `user_project_wrapper.v`: UPW that could be used for this design, which instantiates our "adapter" `solo_squash_caravel`.
+*   `wrapped_project_id.h`: This file has no code. It has [an alternate in `wrapped_stuff`](../wrapped_stuff/wrapped_project_id.h) which defines `PROJECT_ID` for use in a wrapped group submission, but the copy in this directory is just a dummy file that lets the firmware compile for stand-alone-design mode.
 *   `docs/solo_squash_upw.png`: Some eye-candy: Hand-built image (using screenshots made by KLayout) to show the overall UPW design, and then close-ups. This is intended to go into `caravel_user_project/docs/` and then be used in `caravel_user_project/README.md`.
