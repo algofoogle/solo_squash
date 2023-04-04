@@ -46,7 +46,8 @@ cp -v $CS/Makefile $CT/                     && ok || bad
 cp -v $CS/solo_squash* $CT/                 && ok || bad
 cp -v $CS/test_solo_squash_caravel.py $CT/  && ok || bad
 # Make sure .gitignore exists and contains an EXCEPTION to permit *.gtkw
-fgrep '!*.gtkw' $SS/.gitignore 2>/dev/null || echo '!*.gtkw' >> $SS/.gitignore
+echo -n "Update $CT/.gitignore: "
+fgrep '!*.gtkw' $CT/.gitignore 2>/dev/null || echo '!*.gtkw' >> $CT/.gitignore && ok || bad
 
 # Copy caravel build files:
 V=../../..
