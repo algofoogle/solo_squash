@@ -30,10 +30,13 @@ It is primarily useful to the [`wrapped_solo_squash` repo](https://github.com/al
     *   Make sure this repo is a submodule of the wrapped repo; typically in a subdirectory called `solo_squash`.
     *   `cd solo_squash/wrapped_stuff`
     *   `./copy_wrapped.sh`
-    *   This should copy the necessary files in higher-up directories of the wrapped repo,
-        especially inside `caravel_stuff` and the base dir of the repo.
+    *   This should copy the necessary files into higher-up directories of the wrapped repo,
+        especially into the base dir of the repo, and a `solo_squash_caravel` subdirectory.
+    *   It might also recommend you do `git rm -rf caravel_test` because in a brand new wrapped repo
+        those files are just examples and `solo_squash_caravel` is meant to replace `caravel_test` anyway.
+        Just check this and use your own discretion.
     *   Maybe try `git status` inside the wrapped repo to see what (if anything) changed.
-    *   You would then probably run the tests in `caravel_tests` and try going back to harden with OpenLane:
+    *   You would then probably run the tests in `solo_squash_caravel` and try going back to harden with OpenLane:
         *   `cd $OPENLANE_ROOT`
         *   `./flow.tcl -design wrapped_solo_squash`
 *   For use inside caravel, you will typically use it inside a clean(ish) `caravel_user_project`, and possibly a dedicated testing branch, just to make sure the wrapper and everything are set up properly.
@@ -43,6 +46,9 @@ It is primarily useful to the [`wrapped_solo_squash` repo](https://github.com/al
     *   This should copy necessary files throughout caravel.
     *   Maybe try `git status` inside the caravel repo to see what (if anything) changed.
     *   You would then probably run the tests in `verilog/dv/solo_squash`.
+
+Note that the intent of these two copy scripts is that you can re-run them later after updating this `solo_squash` repo,
+to refresh files that you've already committed into the respective `wrapped_solo_squash` or `caravel_user_project` repo.
 
 
 ## What's in this subdirectory?

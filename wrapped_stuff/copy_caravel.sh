@@ -22,6 +22,9 @@
 # wrapper directly inside a caravel context) it will attempt to install
 # stuff that repo, allowing for testing of the wrapper
 # (i.e. what will become verilog/rtl/wrapper.v).
+# This is just Anton's script to assist with his own testing of this
+# wrapped project inside caravel.
+# Matt Venn's automated processes do this a better way.
 
 
   RED='\033[0;31m'
@@ -40,7 +43,7 @@ CT=$DV/solo_squash_caravel
 mkdir -p $CT
 
 # Copy test files:
-CS=../caravel_stuff                         && ok || bad
+CS=../caravel_stuff
 cp -v wrapped_project_id.h $CT/             && ok || bad
 cp -v $CS/Makefile $CT/                     && ok || bad
 cp -v $CS/solo_squash* $CT/                 && ok || bad
