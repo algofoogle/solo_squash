@@ -41,28 +41,28 @@ module solo_squash #(
   inout vssd1,	      // User area 1 digital ground
 `endif
 
-  input clk,          // 25MHz clock.
+  input   wire  clk,          // 25MHz clock.
 
 `ifdef RESET_AL
-  input reset_n,      // Reset; active LOW (for external button).
+  input   wire  reset_n,      // Reset; active LOW (for external button).
 `else
-  input reset,        // Reset: active HIGH (for Caravel Wishbone compat.)
+  input   wire  reset,        // Reset: active HIGH (for Caravel Wishbone compat.)
 `endif
 
 `ifdef CARAVEL_IO_OEB
-  output oeb[5:0],    // These map to io_oeb[17:12].
+  output  wire  oeb[5:0],    // These map to io_oeb[17:12].
 `endif
 
-  input pause_n,
-  input new_game_n,   // Just does a minimal play state reset.
-  input down_key_n,
-  input up_key_n,
-  output hsync,
-  output vsync,
-  output speaker,
-  output red,
-  output green,
-  output blue
+  input   wire  pause_n,
+  input   wire  new_game_n,   // Just does a minimal play state reset.
+  input   wire  down_key_n,
+  input   wire  up_key_n,
+  output  wire  hsync,
+  output  wire  vsync,
+  output  wire  speaker,
+  output  wire  red,
+  output  wire  green,
+  output  wire  blue
 );
   localparam HFULL        = HRES+HF+HS+HB;
   localparam VFULL        = VRES+VF+VS+VB;
