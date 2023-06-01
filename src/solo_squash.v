@@ -233,11 +233,13 @@ module solo_squash #(
   assign hsync = ~((HRES+HF) <= h && h < (HRES+HF+HS));
   assign vsync = ~((VRES+VF) <= v && v < (VRES+VF+VS));
 
-/* verilator lint_off WIDTH */
   assign speaker =
     (v[5] & hit) |
-    (v[6] & (ballX>=((wallR_LIMIT>>1)-ballSize) | ballY<(wallL_LIMIT>>1) | ballY>=(wallB_LIMIT>>1)-ballSize));
-/* verilator lint_on WIDTH */
+    (v[6] & (
+      {1'b0,ballX}>=((wallR_LIMIT>>1)-ballSize) |
+      {1'b0,ballY}<(wallL_LIMIT>>1) |
+      {1'b0,ballY}>=(wallB_LIMIT>>1)-ballSize)
+    );
 
   //NOTE: The design of this is such that we'll continue to get a tone even if the ball is outside the wall.
 
@@ -257,11 +259,10 @@ module solo_squash #(
   );
 
 
-/* verilator lint_off WIDTH */
 `ifdef BG_ANIMATED
   reg [4:0] offset; // To slow things down, we only use the upper 4 bits of this.
-  wire [9:0] oh = h - offset[4:1];
-  wire [9:0] ov = v - offset[4:1];
+  wire [9:0] oh = h - {6'b0,offset[4:1]};
+  wire [9:0] ov = v - {6'b0,offset[4:1]};
 `else
   //SMELL: Does this make the design needlessly more complicated, or does this get automatically optimised out?
   wire [9:0] oh = h;
@@ -277,7 +278,6 @@ module solo_squash #(
     (oh[4] ^ ov[4]) ? (oh[0] & ov[0]) : (oh[0] ^ ov[0])
 `endif
   );
-/* verilator lint_on WIDTH */
 
 
 endmodule
