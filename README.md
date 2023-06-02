@@ -56,6 +56,15 @@ Key parts:
 *   Buttons (all with pull-ups): Up, Down, Pause, New Game, optional Reset
 *   VGA connector: HSYNC and VSYNC via 100&ohm; resistors and R, G, B each via 270&ohm; resistors
     (assuming 3.3V outputs rather than 5V).
+*   `speaker` signal optionally connected in series with a piezo speaker and 670&ohm;
+    resistor to GND.
+
+There is a Quartus project and top wrapper interface in [`de0nano`](./de0nano/) for running
+this specifically on a Terasic DE0-Nano board (using an Altera Cyclone IV FPGA), but with
+a little extra external hardware as mentioned above. The file
+[`solo_squash_de0nano.v`](./de0nano/solo_squash_de0nano.v) should be inspected to see the
+mapping of DE0-Nano GPIOs for working out where to connect the external hardware.
+
 
 # Visual simulation with Verilator
 
