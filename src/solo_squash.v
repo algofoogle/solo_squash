@@ -19,9 +19,8 @@
 
 `define BG_PRETTY
 `define BG_ANIMATED
-//NOTE: Ideally RESET_AL and CARAVEL_IO_OEB are defined only when needed, and specifically via the build process:
+//NOTE: Ideally RESET_AL is defined only when needed, and specifically via the build process:
 // `define RESET_AL        // If defined, reset is active low. I'll probably only use this for CPLD/FPGA implementations, not ASIC.
-// `define CARAVEL_IO_OEB  // Drive some of Caravel's io_oeb lines. //NOTE: Probably won't be used anymore; handled by solo_squash_caravel adapter instead.
 
 module solo_squash #(
   parameter HRES        = 640,
@@ -49,11 +48,7 @@ module solo_squash #(
   input   wire  reset,        // Reset: active HIGH (for Caravel Wishbone compat.)
 `endif
 
-`ifdef CARAVEL_IO_OEB
-  output  wire  oeb[5:0],    // These map to io_oeb[17:12].
-`endif
-
-  input   wire  pause_n,
+  input   wire  pause_n,      // While asserted, gameplay is suspended.
   input   wire  new_game_n,   // Just does a minimal play state reset.
   input   wire  down_key_n,
   input   wire  up_key_n,
@@ -62,7 +57,20 @@ module solo_squash #(
   output  wire  speaker,
   output  wire  red,
   output  wire  green,
+`ifdef DEBUG_OUTPUTS
+  output  wire  blue,
+  // Debug signals:
+  output  wire  col0,
+  output  wire  row0,
+  output  wire  [9:0] h_out,
+  output  wire  [9:0] v_out,
+  output  wire  [4:0] offset_out,
+  output  wire  visible_out
+`else // not DEBUG_OUTPUTS
   output  wire  blue
+`endif // DEBUG_OUTPUTS
+
+
 );
   localparam HFULL        = HRES+HF+HS+HB;
   localparam VFULL        = VRES+VF+VS+VB;
@@ -75,14 +83,6 @@ module solo_squash #(
   localparam wallR_LIMIT  = HRES -wallWidth;
   localparam wallT_LIMIT  =       wallWidth;
   localparam wallB_LIMIT  = VRES -wallWidth;
-
-`ifdef CARAVEL_IO_OEB //NOTE: Probably won't be used anymore; handled by solo_squash_caravel adapter instead.
-`ifdef RESET_AL
-  assign oeb = {6{~reset}}; // AL Reset; when low, oeb must be high (to disable output).
-`else //RESET_AL
-  assign oeb = {6{reset}};  // AH Reset; when high, oeb is high (to disable output).
-`endif //RESET_AL
-`endif //CARAVEL_IO_OEB
 
   reg [9:0]   h         /* verilator public */; // 0..799
   reg [9:0]   v         /* verilator public */; // 0..524
@@ -110,6 +110,15 @@ module solo_squash #(
 
   wire up       = ~up_key_n;
   wire down     = ~down_key_n;
+
+`ifdef DEBUG_OUTPUTS
+  assign h_out = h;
+  assign v_out = v;
+  assign offset_out = offset;
+  assign visible_out = visible;
+  assign col0 = ~|h;
+  assign row0 = ~|v;
+`endif // DEBUG_OUTPUTS
 
   always @(posedge clk) begin
 
