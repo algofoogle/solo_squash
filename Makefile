@@ -29,13 +29,22 @@ TOP = solo_squash
 
 # Stuff for simulation:
 SIM_LDFLAGS = -lSDL2 -lSDL2_ttf
-SIM_EXE = sim/obj_dir/V$(TOP)
+ifeq ($(OS),Windows_NT)
+	SIM_EXE = sim/obj_dir/V$(TOP).exe
+else
+	SIM_EXE = sim/obj_dir/V$(TOP)
+endif
 XDEFINES := $(DEF:%=+define+%)
 # A fixed seed value for sim_seed:
 SEED ?= 22860
-# A random seed value for im_random:
-RSEED := $(shell bash -c 'echo $$RANDOM')
-
+ifeq ($(OS),Windows_NT)
+	SIM_CFLAGS := -DINSPECT_INTERNAL -DWINDOWS
+	RSEED := $(shell ./winrand.bat)
+else
+	SIM_CFLAGS := -DINSPECT_INTERNAL
+	RSEED := $(shell bash -c 'echo $$RANDOM')
+endif
+#NOTE: RSEED is a random seed value for sim_random.
 
 # COCOTB variables:
 export COCOTB_REDUCED_LOG_FMT=1
@@ -106,7 +115,7 @@ $(SIM_EXE): $(MAIN_VSOURCES) sim/sim_main.cpp sim/main_tb.h sim/testbench.h
 		--cc $(MAIN_VSOURCES) \
 		--top-module $(TOP) \
 		--exe --build ../sim/sim_main.cpp \
-		-CFLAGS -DINSPECT_INTERNAL\
+		-CFLAGS "$(SIM_CFLAGS)" \
 		-LDFLAGS "$(SIM_LDFLAGS)" \
 		+define+RESET_AL \
 		$(XDEFINES)

@@ -16,7 +16,7 @@
  */
 
 #include <stdio.h>
-#include <err.h>
+// #include <err.h>
 #include <iostream>
 #include <string>
 #include <filesystem> // For std::filesystem::absolute() (which is only used if we have C++17)
@@ -96,6 +96,21 @@ using namespace std;
 #include "main_tb.h"
 
 
+#ifdef WINDOWS
+//SMELL: For some reason, when building this under Windows, it stops building as a console command
+// and instead builds as a Windows app requiring WinMain. Possibly something to do with Verilator
+// or SDL2 under windows. I'm not sure yet. Anyway, this is a temporary workaround. The Makefile
+// will include `-CFLAGS -DWINDOWS`, when required, in order to activate this code:
+#include <windows.h>
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+  printf("DEBUG: WinMain command-line: '%s'\n", lpCmdLine);
+  return main(__argc, __argv); // See: https://stackoverflow.com/a/40107581
+  return 0;
+}
+#endif // WINDOWS
+
+
 // Testbench for main design:
 MAIN_TB       *TB;
 bool          gQuit = false;
@@ -148,8 +163,9 @@ void process_sdl_events() {
       gQuit = true;
     } else if (SDL_KEYDOWN == e.type) {
       switch (e.key.keysym.sym) {
+        case SDLK_ESCAPE:
         case SDLK_q:
-          // Q key pressed, for Quit
+          // Q or ESC key pressed, for Quit
           gQuit = true;
           break;
         case SDLK_SPACE:
