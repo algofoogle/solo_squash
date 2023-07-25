@@ -60,7 +60,7 @@ module solo_squash #(
   output  wire  [9:0] h_out,
   output  wire  [9:0] v_out,
   output  wire  [4:0] offset_out,
-  output  wire  visible_out
+  output  wire  visible_out,
 `endif // DEBUG_OUTPUTS
 
   output  wire  hsync,
