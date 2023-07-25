@@ -269,16 +269,25 @@ void handle_control_inputs() {
 
 
 void check_performance() {
-  auto time_now = SDL_GetTicks();
-  int time_delta = time_now-gPrevTime;
+  uint32_t time_now = SDL_GetTicks();
+  uint32_t time_delta = time_now-gPrevTime;
 
   if (time_delta >= 1000) {
     // 1S+ has elapsed, so print FPS:
     printf("Current FPS: %5.2f", float(TB->frame_counter-gPrevFrames)/float(time_delta)*1000.0f);
     // Estimate clock speed based on delta of m_tickcount:
-    long hz = (TB->m_tickcount-gPrevTickCount)*1000L / time_delta;
+    //SMELL: This code is really weird because for some bizarre reason I was getting mixed results
+    // between Windows and Linux builds. It was as though sometimes on Windows it was treating a
+    // LONG as a 32-bit integer, especially when doing *1000L
+    long a = gPrevTickCount;
+    long b = TB->m_tickcount;
+    long c = (b-a);
+    long d = time_delta;
+    long hz = c / d;
+    hz *= 1000L;
     // Now print long-term average:
     printf(" - Total average FPS: %5.2f", float(TB->frame_counter)/float(time_now-gOriginalTime)*1000.0f);
+    // printf(" - a=%ld b=%ld c=%ld, d=%ld, hz=%ld", a, b, c, d, hz);
     printf(" - m_tickcount=");
     TB->print_big_num(TB->m_tickcount);
     printf(" (");
@@ -482,12 +491,12 @@ int main(int argc, char **argv) {
 #endif
 
 
-  printf("Starting simulation in ");
-  for (int c=3; c>0; --c) {
-    printf("%i... ", c);
-    fflush(stdout);
-    sleep(1);
-  }
+  // printf("Starting simulation in ");
+  // for (int c=3; c>0; --c) {
+  //   printf("%i... ", c);
+  //   fflush(stdout);
+  //   sleep(1);
+  // }
   printf("Cold start...\n");
 
   int h = 0;

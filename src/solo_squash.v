@@ -20,7 +20,7 @@
 `define BG_PRETTY
 `define BG_ANIMATED
 //NOTE: Ideally RESET_AL is defined only when needed, and specifically via the build process:
-// `define RESET_AL        // If defined, reset is active low. I'll probably only use this for CPLD/FPGA implementations, not ASIC.
+// `define RESET_AL        // If defined, reset is active low.
 
 module solo_squash #(
   parameter HRES        = 640,
@@ -43,22 +43,17 @@ module solo_squash #(
   input   wire  clk,          // 25MHz clock.
 
 `ifdef RESET_AL
-  input   wire  reset_n,      // Reset; active LOW (for external button).
+  input   wire  reset_n,      // Reset; active LOW option.
 `else
-  input   wire  reset,        // Reset: active HIGH (for Caravel Wishbone compat.)
+  input   wire  reset,        // Reset: active HIGH option.
 `endif
 
   input   wire  pause_n,      // While asserted, gameplay is suspended.
   input   wire  new_game_n,   // Just does a minimal play state reset.
   input   wire  down_key_n,
   input   wire  up_key_n,
-  output  wire  hsync,
-  output  wire  vsync,
-  output  wire  speaker,
-  output  wire  red,
-  output  wire  green,
+
 `ifdef DEBUG_OUTPUTS
-  output  wire  blue,
   // Debug signals:
   output  wire  col0,
   output  wire  row0,
@@ -66,11 +61,14 @@ module solo_squash #(
   output  wire  [9:0] v_out,
   output  wire  [4:0] offset_out,
   output  wire  visible_out
-`else // not DEBUG_OUTPUTS
-  output  wire  blue
 `endif // DEBUG_OUTPUTS
 
-
+  output  wire  hsync,
+  output  wire  vsync,
+  output  wire  speaker,
+  output  wire  red,
+  output  wire  green,
+  output  wire  blue
 );
   localparam HFULL        = HRES+HF+HS+HB;
   localparam VFULL        = VRES+VF+VS+VB;
@@ -239,6 +237,7 @@ module solo_squash #(
     end // else (i.e. not in reset)
   end
 
+  //SMELL: Would registers be better than magnitude comparators?
   assign hsync = ~((HRES+HF) <= h && h < (HRES+HF+HS));
   assign vsync = ~((VRES+VF) <= v && v < (VRES+VF+VS));
 
@@ -287,6 +286,5 @@ module solo_squash #(
     (oh[4] ^ ov[4]) ? (oh[0] & ov[0]) : (oh[0] ^ ov[0])
 `endif
   );
-
 
 endmodule
