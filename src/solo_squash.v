@@ -19,7 +19,6 @@
 
 `define BG_PRETTY
 `define BG_ANIMATED
-//NOTE: Ideally RESET_AL is defined only when needed, and specifically via the build process:
 // `define RESET_AL        // If defined, reset is active low.
 
 module solo_squash #(
@@ -53,13 +52,17 @@ module solo_squash #(
   input   wire  down_key_n,
   input   wire  up_key_n,
 
+  input   wire  spi_sclk,
+  input   wire  spi_mosi,
+  input   wire  spi_ss_n,
+
 `ifdef DEBUG_OUTPUTS
   // Debug signals:
   output  wire  col0,
   output  wire  row0,
   output  wire  [9:0] h_out,
   output  wire  [9:0] v_out,
-  output  wire  [4:0] offset_out,
+  output  wire  [4:0] offset_out, // Background pattern offset.
   output  wire  visible_out,
 `endif // DEBUG_OUTPUTS
 
@@ -117,6 +120,40 @@ module solo_squash #(
   assign col0 = ~|h;
   assign row0 = ~|v;
 `endif // DEBUG_OUTPUTS
+
+
+
+  // ================== SPI implementation... ==================
+
+  // Metastability avoidance: sync SPI stuff to our clock domain:
+  reg [2:0] spi_sclk_sync; always @(posedge clk) spi_sclk_sync <= {spi_sclk_sync[1:0], spi_sclk};
+  wire sclk_rise = spi_sclk_sync[2:1] == 2'b01;
+  reg [1:0] spi_ss_n_sync; always @(posedge clk) spi_ss_n_sync <= {spi_ss_n_sync[0], spi_ss_n};
+  wire ss_active = ~spi_ss_n_sync[1];
+  reg [1:0] spi_mosi_sync; always @(posedge clk) spi_mosi_sync <= {spi_mosi_sync[0], spi_mosi};
+  wire mosi = spi_mosi_sync[1];
+  //NOTE: Might not need sync on MOSI, given it should already be stable before sclk_rise?
+
+  // For now, just expect 9 SPI bits, to set the paddle position:
+  reg [3:0] spi_count; // Counts SPI bits 0..8
+  reg [8:0] spi_buffer; // Holds incoming SPI bit stream (MSB first).
+  wire spi_frame_end = (spi_count == 8);
+  always @(posedge clk) begin
+    if (!ss_active)
+      // SPI not selected, so reset SPI counter:
+      spi_count <= 0;
+    else if (sclk_rise) begin
+      // SPI SCLK rising edge, so clock in a bit.
+      spi_buffer <= {spi_buffer[7:0], mosi};
+      spi_count <= spi_frame_end ? 0 : spi_count + 1;
+    end
+  end
+
+  //@@@TODO: Need to implement actual SPI processing logic.
+
+
+
+  // ================== Main logic... ==================
 
   always @(posedge clk) begin
 
