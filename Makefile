@@ -31,8 +31,10 @@ TOP = solo_squash
 SIM_LDFLAGS = -lSDL2 -lSDL2_ttf
 ifeq ($(OS),Windows_NT)
 	SIM_EXE = sim/obj_dir/V$(TOP).exe
+	VERILATOR = verilator_bin.exe
 else
 	SIM_EXE = sim/obj_dir/V$(TOP)
+	VERILALTOR = verilator
 endif
 XDEFINES := $(DEF:%=+define+%)
 # A fixed seed value for sim_seed:
@@ -110,7 +112,7 @@ sim_seed: $(SIM_EXE)
 
 # Build main simulation exe:
 $(SIM_EXE): $(MAIN_VSOURCES) sim/sim_main.cpp sim/main_tb.h sim/testbench.h
-	verilator \
+	$(VERILATOR) \
 		--Mdir sim/obj_dir \
 		--cc $(MAIN_VSOURCES) \
 		--top-module $(TOP) \
