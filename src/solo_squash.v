@@ -19,8 +19,9 @@
 
 `define BG_PRETTY
 `define BG_ANIMATED
-//NOTE: Ideally RESET_AL is defined only when needed, and specifically via the build process:
-// `define RESET_AL        // If defined, reset is active low.
+//NOTE: Ideally RESET_AL and CARAVEL_IO_OEB are defined only when needed, and specifically via the build process:
+// `define RESET_AL        // If defined, reset is active low. I'll probably only use this for CPLD/FPGA implementations, not ASIC.
+// `define CARAVEL_IO_OEB  // Drive some of Caravel's io_oeb lines. //NOTE: Probably won't be used anymore; handled by solo_squash_caravel adapter instead.
 
 module solo_squash #(
   parameter HRES        = 640,
@@ -43,32 +44,35 @@ module solo_squash #(
   input   wire  clk,          // 25MHz clock.
 
 `ifdef RESET_AL
-  input   wire  reset_n,      // Reset; active LOW option.
+  input   wire  reset_n,      // Reset; active LOW (for external button).
 `else
-  input   wire  reset,        // Reset: active HIGH option.
+  input   wire  reset,        // Reset: active HIGH (for Caravel Wishbone compat.)
 `endif
 
-  input   wire  pause_n,      // While asserted, gameplay is suspended.
+`ifdef CARAVEL_IO_OEB
+  output  wire  oeb[5:0],    // These map to io_oeb[17:12].
+`endif
+
+  input   wire  pause_n,
   input   wire  new_game_n,   // Just does a minimal play state reset.
   input   wire  down_key_n,
   input   wire  up_key_n,
-
-`ifdef DEBUG_OUTPUTS
-  // Debug signals:
-  output  wire  col0,
-  output  wire  row0,
-  output  wire  [9:0] h_out,
-  output  wire  [9:0] v_out,
-  output  wire  [4:0] offset_out,
-  output  wire  visible_out,
-`endif // DEBUG_OUTPUTS
-
   output  wire  hsync,
   output  wire  vsync,
   output  wire  speaker,
   output  wire  red,
   output  wire  green,
-  output  wire  blue
+  output  wire  blue,
+
+  // Debug signals:
+  output  wire  col0,
+  output  wire  row0,
+  output  wire [9:0] h_out,
+  output  wire [9:0] v_out,
+  output  wire [4:0] offset_out,
+  output  wire  visible_out
+
+
 );
   localparam HFULL        = HRES+HF+HS+HB;
   localparam VFULL        = VRES+VF+VS+VB;
@@ -81,6 +85,19 @@ module solo_squash #(
   localparam wallR_LIMIT  = HRES -wallWidth;
   localparam wallT_LIMIT  =       wallWidth;
   localparam wallB_LIMIT  = VRES -wallWidth;
+
+  assign h_out = h;
+  assign v_out = v;
+  assign offset_out = offset;
+  assign visible_out = visible;
+
+`ifdef CARAVEL_IO_OEB //NOTE: Probably won't be used anymore; handled by solo_squash_caravel adapter instead.
+`ifdef RESET_AL
+  assign oeb = {6{~reset}}; // AL Reset; when low, oeb must be high (to disable output).
+`else //RESET_AL
+  assign oeb = {6{reset}};  // AH Reset; when high, oeb is high (to disable output).
+`endif //RESET_AL
+`endif //CARAVEL_IO_OEB
 
   reg [9:0]   h         /* verilator public */; // 0..799
   reg [9:0]   v         /* verilator public */; // 0..524
@@ -98,6 +115,9 @@ module solo_squash #(
   wire hmax     = h == (HFULL-1);       //NOTE: Because we don't care about values ABOVE hmax, we can also look for &{h[9:8], h[5:0]} i.e. 10'b11xx111111 (and in fact, can we compare exactly with this?)
   wire vmax     = v == (VFULL-1);       //NOTE: Because we don't care about values ABOVE vmax, we can also look for &{v[9],   v[3:2]} i.e. 10'b1xxxxx11xx (and in fact, can we compare exactly with this?)
 
+  assign col0 = ~|h;
+  assign row0 = ~|v;
+
   wire wallT    = v <  wallT_LIMIT;
   wire wallB    = v >= wallB_LIMIT;
   wire wallL    = h <  wallL_LIMIT; // This is the REGION where the left wall would be, but we don't have a left wall: It just instead is the intersection with the paddle.
@@ -108,15 +128,6 @@ module solo_squash #(
 
   wire up       = ~up_key_n;
   wire down     = ~down_key_n;
-
-`ifdef DEBUG_OUTPUTS
-  assign h_out = h;
-  assign v_out = v;
-  assign offset_out = offset;
-  assign visible_out = visible;
-  assign col0 = ~|h;
-  assign row0 = ~|v;
-`endif // DEBUG_OUTPUTS
 
   always @(posedge clk) begin
 
@@ -237,7 +248,6 @@ module solo_squash #(
     end // else (i.e. not in reset)
   end
 
-  //SMELL: Would registers be better than magnitude comparators?
   assign hsync = ~((HRES+HF) <= h && h < (HRES+HF+HS));
   assign vsync = ~((VRES+VF) <= v && v < (VRES+VF+VS));
 
@@ -286,5 +296,6 @@ module solo_squash #(
     (oh[4] ^ ov[4]) ? (oh[0] & ov[0]) : (oh[0] ^ ov[0])
 `endif
   );
+
 
 endmodule
